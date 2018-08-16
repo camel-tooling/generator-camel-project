@@ -43,9 +43,14 @@ For a Java DSL-based project, the structure looks like this:
 
 ## Installing the Camel Project generator
 
-Once we get the generator uploaded upstream in the npm repository:
+You must have yeoman installed first:
 ```
-> npm install --global yo camel-project
+> npm install -g yo
+```
+
+The generator is located in the npm repository (https://www.npmjs.com/package/generator-camel-project):
+```
+> npm install --global generator-camel-project
 ```
 
 ## Running the Camel Project generator
