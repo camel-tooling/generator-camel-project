@@ -88,7 +88,7 @@ Copying dot files
 
 ### Notes on input fields
 
-* 'Fuse project name' defaults to the name of the directory in which you start the generator.
+* 'Camel project name' defaults to the name of the directory in which you start the generator.
 * 'Camel version' defaults to 2.18.1 but if you provide a different version, that version then becomes the default  for the next time the generator is run.
 * 'DSL type' defaults to 'spring' but if you change it to a valid DSL type such as 'blueprint' (only spring and blueprint are supported at this time), that becomes the default for the next time the generator is run. If you enter an invalid value, the generator will present an error ">> Camel DSL must be either 'spring' or 'blueprint'".
 * 'Package name' defaults to 'com.' + the name of the directory (i.e. 'com.myproject'). This default does not change if you provide a different value.
@@ -96,20 +96,20 @@ Copying dot files
 ## Development Notes
 
 ### Grabbing the code
-The code is available at github currently in: https://github.com/bfitzpat/generator-fuse-project
+The code is available at github currently in: https://github.com/camel-tooling/generator-camel-project/
 
 Fork the project and clone it locally. If you have suggestions or improvements, feel free to create
 pull requests and issues.
 
 ### Running the generator
-From the main generator-fuse-project directory:
+From the main generator-camel-project directory:
 ```
 > npm link
 ```
 
-Then create a directory you wish to create a Fuse project in and run the generator as described above:
+Then create a directory you wish to create a Camel project in and run the generator as described above:
 ```
-> yo fuse-project
+> yo camel-project
 ```
 
 ### Running the Mocha tests
@@ -117,7 +117,7 @@ First you must install mocha with npm.
 ```
 > npm install --global mocha
 ```
-Then, in the main generator-fuse-project directory:
+Then, in the main generator-camel-project directory:
 ```
 > mocha
 ```
