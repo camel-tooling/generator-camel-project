@@ -126,3 +126,15 @@ Then, in the main generator-camel-project directory:
 ```
 > mocha
 ```
+
+## Known issues
+
+Generated templates for spring and Java DSLs can be run with:
+```
+> mvn install
+> mvn camel:run
+```
+
+Unfortunately, the blueprint version does not run successfully. Working on finding a solution. 
+Created https://github.com/camel-tooling/generator-camel-project/issues/1
+
