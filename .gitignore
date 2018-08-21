@@ -1,2 +1,4 @@
 /node_modules/
 log-camel-lsp.out
+/generators/wsdl2rest/lib/
+/generators/wsdl2rest/target/
