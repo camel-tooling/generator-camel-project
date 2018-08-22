@@ -60,7 +60,7 @@ module.exports = class extends Generator {
       var outPath = path.join(process.cwd(), userProps.outdirectory);
 
       var cmdString = 'java';
-//      cmdString = cmdString + ' -Dlog4j.configuration ' + log4jDirUrl;
+      cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
       cmdString = cmdString + ' -jar ' + libDir;
       cmdString = cmdString + ' --wsdl ' + userProps.wsdl;
       cmdString = cmdString + ' --out ' + outPath;
