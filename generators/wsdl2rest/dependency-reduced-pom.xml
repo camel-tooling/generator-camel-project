@@ -10,6 +10,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
+        <version>3.1.0</version>
         <configuration>
           <filesets>
             <fileset>
@@ -30,7 +31,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>org.jboss.fuse.wsdl2rest.impl.Wsdl2Rest</mainClass>
+                  <mainClass>org.jboss.fuse.wsdl2rest.impl.Main</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -39,6 +40,98 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>fuse-public-repository</id>
+      <name>FuseSource Community Release Repository</name>
+      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
+    </repository>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>red-hat-ga-repository</id>
+      <name>Red Hat GA Repository</name>
+      <url>https://maven.repository.redhat.com/ga</url>
+    </repository>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>red-hat-ea-repository</id>
+      <name>Red Hat EA Repository</name>
+      <url>https://maven.repository.redhat.com/earlyaccess/all</url>
+    </repository>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss-ea-repository</id>
+      <name>Red Hat JBoss Early Access Repository</name>
+      <url>http://repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>fuse-public-repository</id>
+      <name>FuseSource Community Release Repository</name>
+      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>red-hat-ga-repository</id>
+      <name>Red Hat GA Repository</name>
+      <url>https://maven.repository.redhat.com/ga</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>red-hat-ea-repository</id>
+      <name>Red Hat EA Repository</name>
+      <url>https://maven.repository.redhat.com/earlyaccess/all</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss-ea-repository</id>
+      <name>Red Hat JBoss Early Access Repository</name>
+      <url>http://repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -51,14 +144,14 @@
     </dependencies>
   </dependencyManagement>
   <properties>
-    <version.javax.ws.rs.api>2.1.0.redhat-1</version.javax.ws.rs.api>
-    <version.wsdl4j>1.6.3.redhat-2</version.wsdl4j>
+    <version.javax.ws.rs.api>2.1</version.javax.ws.rs.api>
+    <version.wsdl4j>1.6.3</version.wsdl4j>
     <version.args4j>2.33</version.args4j>
-    <version.apache.camel>2.21.0.fuse-000116</version.apache.camel>
+    <version.apache.camel>2.20.1</version.apache.camel>
     <version.javaparser>2.5.1</version.javaparser>
-    <version.apache.cxf>3.1.11.fuse-000285</version.apache.cxf>
-    <version.wsdl2rest>0.7.0.fuse-000086-redhat-3</version.wsdl2rest>
-    <version.junit>4.12.0.redhat-003</version.junit>
-    <version.apache.velocity>1.7.0.redhat-5</version.apache.velocity>
+    <version.apache.cxf>3.1.11</version.apache.cxf>
+    <version.wsdl2rest>0.8.0.fuse-720006</version.wsdl2rest>
+    <version.junit>4.12</version.junit>
+    <version.apache.velocity>1.7</version.apache.velocity>
   </properties>
 </project>
