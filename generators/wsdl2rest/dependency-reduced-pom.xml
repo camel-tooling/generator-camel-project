@@ -162,6 +162,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.wsdl2rest>0.8.0.fuse-720006</version.wsdl2rest>
     <version.junit>4.12</version.junit>
+    <version.eclipse.jetty>9.4.6.v20170531</version.eclipse.jetty>
     <version.apache.velocity>1.7</version.apache.velocity>
   </properties>
 </project>
