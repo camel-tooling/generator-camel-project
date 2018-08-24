@@ -3,8 +3,10 @@
   "version": "0.1.1",
   "description": "Generates the scaffold for a Camel project with the given name.",
   "files": [
-    "app",
-    "util"
+    "generators/app",
+    "generators/wsdl2rest",
+    "generators/wsdl2rest/config",
+    "generators/wsdl2rest/lib"
   ],
   "repository": {
     "type": "git",
@@ -18,15 +20,16 @@
   "author": "Brian Fitzpatrick",
   "license": "Apache-2.0",
   "dependencies": {
+    "file-url": "^2.0.2",
+    "fs-extra": "^7.0.0",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
-    "yeoman-assert": "^3.1.1",
-    "yeoman-generator": "^2.0.5",
-    "yeoman-test": "^1.7.2",
-    "fs-extra": "^7.0.0"
+    "yeoman-generator": "^2.0.5"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^1.7.2"
   }
 }
