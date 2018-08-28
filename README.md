@@ -1,3 +1,8 @@
+[![GitHub tag](https://img.shields.io/github/tag/camel-tooling/generator-camel-project.svg?style=plastic)]()
+[![Build Status](https://travis-ci.org/camel-tooling/generator-camel-project.svg?branch=master)](https://travis-ci.org/camel-tooling/generator-camel-project)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)]()
+[![Gitter](https://img.shields.io/gitter/room/camel-tooling/Lobby.js.svg)](https://gitter.im/camel-tooling/Lobby)
+
 # generator-camel-project
 Yeoman-based Camel Project Generator. 
 
