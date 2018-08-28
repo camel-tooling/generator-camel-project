@@ -6,20 +6,21 @@
     <artifactId>org.fusesource.ide.wsdl2rest</artifactId>
     <!-- <packaging>eclipse-plugin</packaging> -->
     <name>Red Hat Fuse Tooling :: Camel Editor :: Plugins :: Wsdl2Rest Implementation</name>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <groupId>org.fusesource.yeoman.wsdl2rest</groupId>
 
     <properties>
         <version.apache.camel>2.20.1</version.apache.camel>
-        <version.apache.cxf>3.2.1</version.apache.cxf>
+        <version.apache.cxf>3.1.11</version.apache.cxf>
         <version.apache.velocity>1.7</version.apache.velocity>
-        <version.eclipse.jetty>9.4.6.v20170531</version.eclipse.jetty>
         <version.args4j>2.33</version.args4j>
         <version.javaparser>2.5.1</version.javaparser>
         <version.javax.ws.rs.api>2.1</version.javax.ws.rs.api>
-        <version.junit>4.12</version.junit>
+        <version.junit>4.12</version.junit>        
         <version.wsdl4j>1.6.3</version.wsdl4j>
         <version.wsdl2rest>0.8.0.fuse-720006</version.wsdl2rest>
+        <version.ant>1.8.1</version.ant>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>        
     </properties>
 
@@ -47,8 +48,24 @@
             <version>${version.javaparser}</version>
         </dependency>
         <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>${version.javax.ws.rs.api}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${version.apache.camel}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring</artifactId>
+            <version>${version.apache.camel}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -58,10 +75,27 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-extension-providers</artifactId>
+            <version>${version.apache.cxf}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <artifactId>cxf-tools-wsdlto-core</artifactId>
+            <version>${version.apache.cxf}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-tools-wsdlto-frontend-jaxws</artifactId>
+            <version>${version.apache.cxf}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-tools-wsdlto-frontend-javascript</artifactId>
+            <version>${version.apache.cxf}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-tools-wsdlto-databinding-jaxb</artifactId>
+            <version>${version.apache.cxf}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
@@ -72,11 +106,6 @@
             <groupId>wsdl4j</groupId>
             <artifactId>wsdl4j</artifactId>
             <version>${version.wsdl4j}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>${version.javax.ws.rs.api}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -91,58 +120,33 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-impl</artifactId>
+            <version>${version.wsdl2rest}</version>
+        </dependency>
+        <!-- Util -->
+        <dependency>
+            <groupId>org.jboss.fuse.wsdl2rest</groupId>
+            <artifactId>wsdl2rest-util</artifactId>
+            <version>${version.wsdl2rest}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-nodeps</artifactId>
+            <version>${version.ant}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>wsdl2rest</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-wsdl2rest</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <stripVersion>true</stripVersion>
-                            <outputDirectory>${basedir}/lib/</outputDirectory>
-                            <skip>false</skip>
-                            <artifactItems>
-                                <!-- Impl -->
-                                <artifactItem>
-                                    <groupId>org.jboss.fuse.wsdl2rest</groupId>
-                                    <artifactId>wsdl2rest-impl</artifactId>
-                                    <version>${version.wsdl2rest}</version>
-                                </artifactItem>
-                                <!-- Util -->
-                                <artifactItem>
-                                    <groupId>org.jboss.fuse.wsdl2rest</groupId>
-                                    <artifactId>wsdl2rest-util</artifactId>
-                                    <version>${version.wsdl2rest}</version>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <excludeScope>system</excludeScope>
-                            <!-- <stripVersion>true</stripVersion> -->
-                            <outputDirectory>${basedir}/lib/</outputDirectory>
-                            <skip>false</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <!-- make sure lib dir is removed after clean to avoid "dirty" build -->
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
                 <configuration>
                     <filesets>
                         <fileset>
@@ -151,14 +155,23 @@
                     </filesets>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
-                        <id>ban-uberjars</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
                         <configuration>
-                            <skip>true</skip>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.jboss.fuse.wsdl2rest.impl.Main</mainClass>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
@@ -268,6 +281,6 @@
 			<name>Red Hat JBoss Early Access Repository</name>
 			<url>http://repository.jboss.org/nexus/content/groups/ea</url>
 		</pluginRepository>
-	</pluginRepositories>  
-    
-    </project>
+	</pluginRepositories>    
+
+</project>
