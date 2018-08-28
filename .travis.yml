@@ -16,7 +16,7 @@ script:
   - 'mocha'
 after_success:
   - if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]; then
-    mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization="camel-tooling" -Dsonar.projectKey="generator-camel-project" -Dsonar.projectName="Camel Project Generator"; 
+    sonar-scanner;
     fi
 cache:
   directories:
@@ -28,7 +28,7 @@ deploy:
   api_key: ${DEPLOY_TOKEN}
   skip_cleanup: true
   on:
-    branch: master
+    tags: true
 addons:
   sonarcloud:
     organization: "camel-tooling"
