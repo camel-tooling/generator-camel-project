@@ -12,16 +12,16 @@ install:
   - 'rm -f ./node_modules/.bin/which'
 script:
   - 'npm test --silent'
-#after_success:
-#  - if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]; then
-#    sonar-scanner;
-#    fi
+after_success:
+  - if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]; then
+    mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization="camel-tooling" -Dsonar.projectKey="generator-camel-project" -Dsonar.projectName="Camel Project Generator"; 
+    fi
 cache:
   directories:
     - "node_modules"
 env: DISPLAY=:99
-#addons:
-#  sonarcloud:
-#    organization: "camel-tooling"
-#    branches:
-#      - master
+addons:
+  sonarcloud:
+    organization: "camel-tooling"
+    branches:
+      - master
