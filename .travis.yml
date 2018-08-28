@@ -5,6 +5,7 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
   - 'export PATH=./node_modules/.bin:$PATH'
   - 'npm install -g typescript'
+  - 'npm install -g mocha'
 install:
   - 'npm install --ignore-scripts'
   - 'npm install'
@@ -12,6 +13,7 @@ install:
   - 'rm -f ./node_modules/.bin/which'
 script:
   - 'npm test --silent'
+  - 'mocha'
 after_success:
   - if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]; then
     mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.organization="camel-tooling" -Dsonar.projectKey="generator-camel-project" -Dsonar.projectName="Camel Project Generator"; 
@@ -20,6 +22,13 @@ cache:
   directories:
     - "node_modules"
 env: DISPLAY=:99
+deploy:
+  provider: npm
+  email: bfitzpat@redhat.com
+  api_key: ${DEPLOY_TOKEN}
+  skip_cleanup: true
+  on:
+    branch: master
 addons:
   sonarcloud:
     organization: "camel-tooling"
