@@ -22,6 +22,8 @@ var helpers = require('yeoman-test');
 var basicProps = {};
 var fs = require('fs-extra');
 
+var appPath = '../generators/app';
+
 describe('generator-camel:app', function () {
 
   describe('Should properly scaffold with default config for Spring', function () {
@@ -32,7 +34,7 @@ describe('generator-camel:app', function () {
       basicProps.camelVersion = '2.18.2';
       basicProps.camelDSL = 'spring';
 
-      return helpers.run(path.join(__dirname, '../app'))
+      return helpers.run(path.join(__dirname, appPath))
         .inTmpDir(function (dir) {
           var done = this.async(); // `this` is the RunContext object.
           fs.copy(path.join(__dirname, '../templates'), dir, done);
@@ -64,7 +66,7 @@ describe('generator-camel:app', function () {
       basicProps.camelVersion = '2.18.2';
       basicProps.camelDSL = 'blueprint';
 
-      return helpers.run(path.join(__dirname, '../app'))
+      return helpers.run(path.join(__dirname, appPath))
         .inTmpDir(function (dir) {
           var done = this.async(); // `this` is the RunContext object.
           fs.copy(path.join(__dirname, '../templates'), dir, done);
@@ -96,7 +98,7 @@ describe('generator-camel:app', function () {
       basicProps.camelVersion = '2.18.2';
       basicProps.camelDSL = 'java';
 
-      return helpers.run(path.join(__dirname, '../app'))
+      return helpers.run(path.join(__dirname, appPath))
         .inTmpDir(function (dir) {
           var done = this.async(); // `this` is the RunContext object.
           fs.copy(path.join(__dirname, '../templates'), dir, done);
