@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- var yeoman = require('yeoman-generator');
+var yeoman = require('yeoman-generator');
 var glob = require('glob');
 var path = require('path');
 var mkdirp = require('mkdirp');
@@ -25,7 +25,7 @@ module.exports = class extends yeoman {
 
     constructor(args, opts) {
         super(args, opts);
-    
+
         this.argument('appname', { type: String, required: false });
         this.argument('camelVersion', { type: String, required: false });
         this.argument('camelDSL', { type: String, required: false });
@@ -40,14 +40,14 @@ module.exports = class extends yeoman {
         this.log('  / ___ \\  | |_) | | (_| | | (__  | | | | |  __/');
         this.log(' /_/   \\_\\ | .__/   \\__,_|  \\___| |_| |_|  \\___|');
         this.log('           |_|');
-    
+
         this.log('       ____                              _');
         this.log('     /  ___|   __ _   _ __ ___     ___  | |');
         this.log('    |  |      / _` | | \'_ ` _ \\   / _ \\ | |');
         this.log('    |  |___  | (_| | | | | | | | |  __/ | |');
         this.log('     \\____|   \\__,_| |_| |_| |_|  \\___| |_|');
         this.log(' -----------------------------------------------');
-        this.log('            Camel Project Generator'); 
+        this.log('            Camel Project Generator');
         this.log(' -----------------------------------------------');
         this.log('');
 
@@ -72,66 +72,66 @@ module.exports = class extends yeoman {
         }
 
         var prompts = [{
-                type    : 'input',
-                name    : 'name',
-                message : 'Your Camel project name',
-                default : defaultProject
-            }, 
-            {
-                type    : 'input',
-                name    : 'camelVersion',
-                message : 'Your Camel version',
-                default : defaultVersion,
-                store   : true
-            },
-            {
-                type    : 'input',
-                name    : 'camelDSL',
-                message : 'Camel DSL type (blueprint, spring, or java)',
-                choices : ['blueprint', 'spring', 'java'],
-                default : defaultDSL,
-                validate : utils.validateCamelDSL,
-                store   : true
-            }, {
-                type: 'input',
-                name: 'package',
-                message: 'Package name: ',
-                default: defaultPackage
-            }];
-            return this.prompt(prompts).then(function (props) {
-                this.props = props;
-                this.log('camel project name', props.name);
-                this.log('camel version', props.camelVersion);
-                this.log('camel DSL', props.camelDSL);
-                this.log('package name', props.package);
-            }.bind(this));
-        }
-        
-        //writing logic here
-        writing() {
-            app: {
-                var userProps = this.props;
+            type: 'input',
+            name: 'name',
+            message: 'Your Camel project name',
+            default: defaultProject
+        },
+        {
+            type: 'input',
+            name: 'camelVersion',
+            message: 'Your Camel version',
+            default: defaultVersion,
+            store: true
+        },
+        {
+            type: 'input',
+            name: 'camelDSL',
+            message: 'Camel DSL type (blueprint, spring, or java)',
+            choices: ['blueprint', 'spring', 'java'],
+            default: defaultDSL,
+            validate: utils.validateCamelDSL,
+            store: true
+        }, {
+            type: 'input',
+            name: 'package',
+            message: 'Package name: ',
+            default: defaultPackage
+        }];
+        return this.prompt(prompts).then(function (props) {
+            this.props = props;
+            this.log('camel project name', props.name);
+            this.log('camel version', props.camelVersion);
+            this.log('camel DSL', props.camelDSL);
+            this.log('package name', props.package);
+        }.bind(this));
+    }
 
-                var packageFolder = userProps.package.replace(/\./g, '/');
-                var src = 'src/main/java';
-                var myTemplatePath = path.join(this.templatePath(), userProps.camelDSL);
-                this.folders = glob.sync('**/*/', {cwd: myTemplatePath});
-                this.files = glob.sync('**/*', {cwd: myTemplatePath, nodir: true});
+    //writing logic here
+    writing() {
+        app: {
+            var userProps = this.props;
 
-                this.log('Creating folders');
-                this.folders.forEach(function (folder) {
-                    mkdirp.sync(folder.replace(/src\/main\/java/g, path.join(src, packageFolder)));
-                });
-            
-                this.log('Copying files');
-                this.sourceRoot(myTemplatePath);
-                for (var i = 0; i < this.files.length; i++) {
-                    this.fs.copyTpl(
-                        this.templatePath(this.files[i]),
-                        this.destinationPath(this.files[i].replace(/src\/main\/java/g, path.join(src, packageFolder))),
-                        {userProps: userProps}
-                    );
-                }
+            var packageFolder = userProps.package.replace(/\./g, '/');
+            var src = 'src/main/java';
+            var myTemplatePath = path.join(this.templatePath(), userProps.camelDSL);
+            this.folders = glob.sync('**/*/', { cwd: myTemplatePath });
+            this.files = glob.sync('**/*', { cwd: myTemplatePath, nodir: true });
+
+            this.log('Creating folders');
+            this.folders.forEach(function (folder) {
+                mkdirp.sync(folder.replace(/src\/main\/java/g, path.join(src, packageFolder)));
+            });
+
+            this.log('Copying files');
+            this.sourceRoot(myTemplatePath);
+            for (var i = 0; i < this.files.length; i++) {
+                this.fs.copyTpl(
+                    this.templatePath(this.files[i]),
+                    this.destinationPath(this.files[i].replace(/src\/main\/java/g, path.join(src, packageFolder))),
+                    { userProps: userProps }
+                );
             }
         }
+    }
 };
