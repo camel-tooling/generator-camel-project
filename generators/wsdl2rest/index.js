@@ -52,16 +52,18 @@ module.exports = class extends Generator {
 
       this.log('wsdl url', userProps.wsdl);
 
-      var libDir = path.join(__dirname, 'lib', 'wsdl2rest-impl.jar');
+//      var libDir = path.join(__dirname, 'lib', 'wsdl2rest-impl.jar');
 //      var libDir = path.join(__dirname, 'target', 'wsdl2rest.jar');
-      var log4jDir = path.join(__dirname, 'config', 'logging.properties');
-      var log4jDirStr = String(log4jDir);
-      var log4jDirUrl = fileUrl(log4jDirStr);
+      // var log4jDir = path.join(__dirname, 'config', 'logging.properties');
+      // var log4jDirStr = String(log4jDir);
+      // var log4jDirUrl = fileUrl(log4jDirStr);
       var outPath = path.join(process.cwd(), userProps.outdirectory);
 
-      var cmdString = 'java';
-      cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
-      cmdString = cmdString + ' -jar ' + libDir;
+//      var cmdString = 'java';
+      // cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
+      // cmdString = cmdString + ' -jar ' + libDir;
+      var scriptPath = path.join(__dirname, 'bin', 'wsdl2rest.sh');
+      var cmdString = 'sh ' + scriptPath;
       cmdString = cmdString + ' --wsdl ' + userProps.wsdl;
       cmdString = cmdString + ' --out ' + outPath;
 
