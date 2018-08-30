@@ -49,25 +49,27 @@ module.exports = class extends Generator {
   writing() {
     app: {
       var userProps = this.props;
+      var platformDelimiter = ':';
+      if (process.platform === 'win32') 
+        platformDelimiter = ';';
 
-      this.log('wsdl url', userProps.wsdl);
-
-//      var libDir = path.join(__dirname, 'lib', 'wsdl2rest-impl.jar');
-//      var libDir = path.join(__dirname, 'target', 'wsdl2rest.jar');
-      // var log4jDir = path.join(__dirname, 'config', 'logging.properties');
-      // var log4jDirStr = String(log4jDir);
-      // var log4jDirUrl = fileUrl(log4jDirStr);
+      var mainClass = 'org.jboss.fuse.wsdl2rest.impl.Main';  
+      var libDir = path.join(__dirname, 'lib');
+      var jarDir = path.join(libDir, 'wsdl2rest-impl.jar');
+      var log4jDir = path.join(__dirname, 'config', 'logging.properties');
+      var log4jDirStr = String(log4jDir);
+      var log4jDirUrl = fileUrl(log4jDirStr);
       var outPath = path.join(process.cwd(), userProps.outdirectory);
 
-//      var cmdString = 'java';
-      // cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
-      // cmdString = cmdString + ' -jar ' + libDir;
-      var scriptPath = path.join(__dirname, 'bin', 'wsdl2rest.sh');
-      var cmdString = 'sh ' + scriptPath;
+      // build the java command with classpath, class name, and the passed parameters
+      var cmdString = 'java';
+      cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
+      cmdString = cmdString + ' -cp ' + jarDir + platformDelimiter + 
+        libDir + '\\*' + platformDelimiter + '. ' + mainClass;
       cmdString = cmdString + ' --wsdl ' + userProps.wsdl;
       cmdString = cmdString + ' --out ' + outPath;
 
-      this.log('calling: ' + cmdString);
+      console.log('calling: ' + cmdString);
       const wsdl2rest = exec(cmdString);
 
       wsdl2rest.stdout.on('data', function (data) {
@@ -77,7 +79,12 @@ module.exports = class extends Generator {
         console.log(`stderr: ${data}`);
       });
       wsdl2rest.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
+        if (code === 0) {
+          console.log(`wsdl2rest generated artifacts successfully`);
+        } else {
+          console.log('code came back as ${code}');
+          console.log(`wsdl2rest did not generate artifacts successfully - please check the log file for details`);
+        }
       });
     }
   }

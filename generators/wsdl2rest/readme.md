@@ -22,5 +22,3 @@ Once the files are there, make sure you are in the generator-wsdl2rest folder:
     for Name of the output directory for generated artifacts - type a folder name - right now it's just added to the folder where you currently are
 
 If all goes well, you should have a generated Camel XML DSL configuration file (Spring DSL) with REST DSL elements and generated wrapper code for the WSDL you pointed to. 
-
-Note: Currently, things are not working. There are issues getting the wsdl2rest utility to run through Javascript and the Yeoman framework.
