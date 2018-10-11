@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- const chalk = require('chalk');
+const chalk = require('chalk');
 
 const utils = {};
 
@@ -38,5 +38,25 @@ utils.validateCamelDSL = function (value) {
 utils.isEmpty = function isEmpty(str) {
     return (!str || 0 === str.length);
 }
+
+utils.isNotNull = function isNotNull(object) {
+    return (object != null);
+}
+
+utils.setDefault = function setDefault(baseDefault, optionDefault) {
+    var newDefault = baseDefault;
+    if (!utils.isEmpty(optionDefault)) {
+        var index = optionDefault.indexOf('=');
+        newDefault = optionDefault.substring(index+1, optionDefault.length);
+    }
+    return newDefault;
+}
+
+utils.addPrompt = function addPrompt(promptContent, promptsList) {
+    if (Array.isArray(promptsList)) {
+        promptsList.push(promptContent);
+    }
+}
+
 
 module.exports = utils;
