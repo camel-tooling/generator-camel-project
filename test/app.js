@@ -120,4 +120,39 @@ describe('generator-camel:app', function () {
       assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>') );
     });
   });
+
+  describe('Should properly scaffold with command line options rather than prompts', function () {
+
+    before(function () {
+      basicProps.name = 'MyAppMock2';
+      basicProps.package = 'com.generator.mock2';
+      basicProps.camelVersion = '2.18.2';
+      basicProps.camelDSL = 'spring';
+
+      var args = [];
+      args.push("appname=" + basicProps.name);
+      args.push("camelVersion=" + basicProps.camelVersion);
+      args.push("camelDSL=" + basicProps.camelDSL);
+      args.push("package=" + basicProps.package);
+
+      return helpers.run(path.join(__dirname, '../app'))
+        .inTmpDir(function (dir) {
+          var done = this.async(); // `this` is the RunContext object.
+          fs.copy(path.join(__dirname, '../templates'), dir, done);
+        })
+        .withArguments(args)
+        .toPromise();
+    });
+
+    it('Should create the basic structure', function () {
+      assert.file('pom.xml');
+      assert.file('README.md');
+      assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+    });
+
+    it('Should create pom.xml with default content', function () {
+      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>') );
+      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>') );
+    });
+  });
 });

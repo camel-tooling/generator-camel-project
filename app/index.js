@@ -15,17 +15,45 @@
  * limitations under the License.
  */
 
- var yeoman = require('yeoman-generator');
+var yeoman = require('yeoman-generator');
 var glob = require('glob');
 var path = require('path');
 var mkdirp = require('mkdirp');
 const utils = require('./util');
 
+const defaultCamelVersion = "2.18.1";
+const defaultCamelDSL = "spring";
+const defaultPackagePrefix = "com.";
+
+var appname;
+var camelVersion;
+var camelDSL;
+var package;
+
+function consoleHeader() {
+    console.log('     _                             _');
+    console.log('    / \\     _ __     __ _    ___  | |__     ___');
+    console.log('   / _ \\   | \'_ \\   / _` |  / __| | \'_ \\   / _ \\');
+    console.log('  / ___ \\  | |_) | | (_| | | (__  | | | | |  __/');
+    console.log(' /_/   \\_\\ | .__/   \\__,_|  \\___| |_| |_|  \\___|');
+    console.log('           |_|');
+
+    console.log('       ____                              _');
+    console.log('     /  ___|   __ _   _ __ ___     ___  | |');
+    console.log('    |  |      / _` | | \'_ ` _ \\   / _ \\ | |');
+    console.log('    |  |___  | (_| | | | | | | | |  __/ | |');
+    console.log('     \\____|   \\__,_| |_| |_| |_|  \\___| |_|');
+    console.log(' -----------------------------------------------');
+    console.log('            Camel Project Generator');
+    console.log(' -----------------------------------------------');
+    console.log('');
+}
+
 module.exports = class extends yeoman {
 
     constructor(args, opts) {
         super(args, opts);
-    
+
         this.argument('appname', { type: String, required: false });
         this.argument('camelVersion', { type: String, required: false });
         this.argument('camelDSL', { type: String, required: false });
@@ -34,102 +62,98 @@ module.exports = class extends yeoman {
 
     prompting() {
 
-        this.log('     _                             _');
-        this.log('    / \\     _ __     __ _    ___  | |__     ___');
-        this.log('   / _ \\   | \'_ \\   / _` |  / __| | \'_ \\   / _ \\');
-        this.log('  / ___ \\  | |_) | | (_| | | (__  | | | | |  __/');
-        this.log(' /_/   \\_\\ | .__/   \\__,_|  \\___| |_| |_|  \\___|');
-        this.log('           |_|');
-    
-        this.log('       ____                              _');
-        this.log('     /  ___|   __ _   _ __ ___     ___  | |');
-        this.log('    |  |      / _` | | \'_ ` _ \\   / _ \\ | |');
-        this.log('    |  |___  | (_| | | | | | | | |  __/ | |');
-        this.log('     \\____|   \\__,_| |_| |_| |_|  \\___| |_|');
-        this.log(' -----------------------------------------------');
-        this.log('            Camel Project Generator'); 
-        this.log(' -----------------------------------------------');
-        this.log('');
+        var showPrompts = true;
 
-        var defaultProject = this.appname;
-        if (!utils.isEmpty(this.options.appname)) {
-            defaultProject = this.options.appname;
+        if (utils.isNotNull(this.options.appname) && 
+            utils.isNotNull(this.options.camelVersion) &&
+            utils.isNotNull(this.options.camelDSL) && 
+            utils.isNotNull(this.options.package)) {
+            // no prompts
+            showPrompts = false;
         }
 
-        var defaultVersion = '2.18.1';
-        if (!utils.isEmpty(this.options.camelVersion)) {
-            defaultVersion = this.options.camelVersion;
+        if (showPrompts) {
+            consoleHeader();
         }
 
-        var defaultDSL = 'spring';
-        if (!utils.isEmpty(this.options.camelDSL)) {
-            defaultDSL = this.options.camelDSL;
-        }
+        var defaultProject = utils.setDefault(this.appname, this.options.appname);
+        var defaultVersion = utils.setDefault(defaultCamelVersion, this.options.camelVersion);
+        var defaultDSL = utils.setDefault(defaultCamelDSL, this.options.camelDSL);
+        var defaultPackage = utils.setDefault(defaultPackagePrefix + this.appname, this.options.package);
 
-        var defaultPackage = 'com.' + this.appname;
-        if (!utils.isEmpty(this.options.package)) {
-            defaultDSL = this.options.package;
-        }
-
-        var prompts = [{
-                type    : 'input',
-                name    : 'name',
-                message : 'Your Camel project name',
-                default : defaultProject
-            }, 
-            {
-                type    : 'input',
-                name    : 'camelVersion',
-                message : 'Your Camel version',
-                default : defaultVersion,
-                store   : true
-            },
-            {
-                type    : 'input',
-                name    : 'camelDSL',
-                message : 'Camel DSL type (blueprint, spring, or java)',
-                choices : ['blueprint', 'spring', 'java'],
-                default : defaultDSL,
-                validate : utils.validateCamelDSL,
-                store   : true
-            }, {
-                type: 'input',
-                name: 'package',
-                message: 'Package name: ',
-                default: defaultPackage
-            }];
+        var prompts = [];
+        utils.addPrompt({
+            type: 'input',
+            name: 'name',
+            message: 'Your Camel project name',
+            default: defaultProject
+        }, prompts);
+        utils.addPrompt({
+            type    : 'input',
+            name    : 'camelVersion',
+            message : 'Your Camel version',
+            default : defaultVersion,
+            store   : true
+        }, prompts);
+        utils.addPrompt({
+            type    : 'input',
+            name    : 'camelDSL',
+            message : 'Camel DSL type (blueprint, spring, or java)',
+            choices : ['blueprint', 'spring', 'java'],
+            default : defaultDSL,
+            validate : utils.validateCamelDSL,
+            store   : true
+            }, prompts);     
+        utils.addPrompt({
+            type: 'input',
+            name: 'package',
+            message: 'Package name: ',
+            default: defaultPackage
+        }, prompts);
+ 
+        if (showPrompts) {
             return this.prompt(prompts).then(function (props) {
-                this.props = props;
-                this.log('camel project name', props.name);
-                this.log('camel version', props.camelVersion);
-                this.log('camel DSL', props.camelDSL);
-                this.log('package name', props.package);
+                this.appname = props.name;
+                this.camelVersion = props.camelVersion;
+                this.camelDSL = props.camelDSL;
+                this.package = props.package;
             }.bind(this));
+        } else {
+            this.appname = defaultProject;
+            this.camelVersion = defaultVersion;
+            this.camelDSL = defaultDSL;
+            this.package = defaultPackage;
         }
+    };
         
-        //writing logic here
-        writing() {
-            var userProps = this.props;
+    //writing logic here
+    writing() {
+        var packageFolder = this.package.replace(/\./g, '/');
+        var src = 'src/main/java';
+        var myTemplatePath = path.join(this.templatePath(), this.camelDSL);
+        this.folders = glob.sync('**/*/', { cwd: myTemplatePath });
+        this.files = glob.sync('**/*', { cwd: myTemplatePath, nodir: true });
 
-            var packageFolder = userProps.package.replace(/\./g, '/');
-            var src = 'src/main/java';
-            var myTemplatePath = path.join(this.templatePath(), userProps.camelDSL);
-            this.folders = glob.sync('**/*/', {cwd: myTemplatePath});
-            this.files = glob.sync('**/*', {cwd: myTemplatePath, nodir: true});
+        this.log('Creating folders');
+        this.folders.forEach(function (folder) {
+            mkdirp.sync(folder.replace(/src\/main\/java/g, path.join(src, packageFolder)));
+        });
 
-            this.log('Creating folders');
-            this.folders.forEach(function (folder) {
-                mkdirp.sync(folder.replace(/src\/main\/java/g, path.join(src, packageFolder)));
-            });
-        
-            this.log('Copying files');
-            this.sourceRoot(myTemplatePath);
-            for (var i = 0; i < this.files.length; i++) {
-                this.fs.copyTpl(
-                    this.templatePath(this.files[i]),
-                    this.destinationPath(this.files[i].replace(/src\/main\/java/g, path.join(src, packageFolder))),
-                    {userProps: userProps}
-                );
-            }
+        this.log('Copying files');
+        this.sourceRoot(myTemplatePath);
+
+        var userProps = {};
+        userProps.name = this.appname;
+        userProps.camelVersion = this.camelVersion;
+        userProps.camelDSL = this.camelDSL;
+        userProps.package = this.package;
+
+        for (var i = 0; i < this.files.length; i++) {
+            this.fs.copyTpl(
+                this.templatePath(this.files[i]),
+                this.destinationPath(this.files[i].replace(/src\/main\/java/g, path.join(src, packageFolder))),
+                { userProps: userProps }
+            );
         }
+    }
 };
