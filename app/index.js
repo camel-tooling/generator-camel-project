@@ -109,29 +109,27 @@ module.exports = class extends yeoman {
         
         //writing logic here
         writing() {
-            app: {
-                var userProps = this.props;
+            var userProps = this.props;
 
-                var packageFolder = userProps.package.replace(/\./g, '/');
-                var src = 'src/main/java';
-                var myTemplatePath = path.join(this.templatePath(), userProps.camelDSL);
-                this.folders = glob.sync('**/*/', {cwd: myTemplatePath});
-                this.files = glob.sync('**/*', {cwd: myTemplatePath, nodir: true});
+            var packageFolder = userProps.package.replace(/\./g, '/');
+            var src = 'src/main/java';
+            var myTemplatePath = path.join(this.templatePath(), userProps.camelDSL);
+            this.folders = glob.sync('**/*/', {cwd: myTemplatePath});
+            this.files = glob.sync('**/*', {cwd: myTemplatePath, nodir: true});
 
-                this.log('Creating folders');
-                this.folders.forEach(function (folder) {
-                    mkdirp.sync(folder.replace(/src\/main\/java/g, path.join(src, packageFolder)));
-                });
-            
-                this.log('Copying files');
-                this.sourceRoot(myTemplatePath);
-                for (var i = 0; i < this.files.length; i++) {
-                    this.fs.copyTpl(
-                        this.templatePath(this.files[i]),
-                        this.destinationPath(this.files[i].replace(/src\/main\/java/g, path.join(src, packageFolder))),
-                        {userProps: userProps}
-                    );
-                }
+            this.log('Creating folders');
+            this.folders.forEach(function (folder) {
+                mkdirp.sync(folder.replace(/src\/main\/java/g, path.join(src, packageFolder)));
+            });
+        
+            this.log('Copying files');
+            this.sourceRoot(myTemplatePath);
+            for (var i = 0; i < this.files.length; i++) {
+                this.fs.copyTpl(
+                    this.templatePath(this.files[i]),
+                    this.destinationPath(this.files[i].replace(/src\/main\/java/g, path.join(src, packageFolder))),
+                    {userProps: userProps}
+                );
             }
         }
 };
