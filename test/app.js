@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
- 'use strict';
+'use strict';
 var path = require('path');
 var assert = require('yeoman-assert');
 var helpers = require('yeoman-test');
 var basicProps = {};
 var fs = require('fs-extra');
+const utils = require('../app/util');
 
 describe('generator-camel:app', function () {
 
@@ -51,8 +52,8 @@ describe('generator-camel:app', function () {
     });
 
     it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>') );
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>') );
+      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
     });
   });
 
@@ -83,8 +84,8 @@ describe('generator-camel:app', function () {
     });
 
     it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>') );
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>') );
+      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
     });
   });
 
@@ -116,8 +117,8 @@ describe('generator-camel:app', function () {
     });
 
     it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>') );
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>') );
+      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
     });
   });
 
@@ -151,8 +152,15 @@ describe('generator-camel:app', function () {
     });
 
     it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>') );
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>') );
+      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
+    });
+  });
+
+  describe('Should properly scaffold with default config for Java DSL', function () {
+    it('utilities should pass basic tests', function () {
+      assert.strictEqual(utils.validatePackage('com.package'), true);
+      assert.notStrictEqual(utils.validatePackage('invalid@package'), true);
     });
   });
 });

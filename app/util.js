@@ -58,5 +58,12 @@ utils.addPrompt = function addPrompt(promptContent, promptsList) {
     }
 }
 
+utils.validatePackage = function(packageName) {
+    var regex = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/;
+    if (!regex.test(packageName)) {
+        return chalk.red('Invalid package name');
+    }
+    return true
+}
 
 module.exports = utils;

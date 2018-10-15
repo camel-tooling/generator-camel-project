@@ -108,7 +108,8 @@ module.exports = class extends yeoman {
             type: 'input',
             name: 'package',
             message: 'Package name: ',
-            default: defaultPackage
+            default: defaultPackage,
+            validate : utils.validatePackage
         }, prompts);
 
         if (showPrompts) {
