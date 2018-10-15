@@ -64,9 +64,9 @@ module.exports = class extends yeoman {
 
         var showPrompts = true;
 
-        if (utils.isNotNull(this.options.appname) && 
+        if (utils.isNotNull(this.options.appname) &&
             utils.isNotNull(this.options.camelVersion) &&
-            utils.isNotNull(this.options.camelDSL) && 
+            utils.isNotNull(this.options.camelDSL) &&
             utils.isNotNull(this.options.package)) {
             // no prompts
             showPrompts = false;
@@ -89,28 +89,28 @@ module.exports = class extends yeoman {
             default: defaultProject
         }, prompts);
         utils.addPrompt({
-            type    : 'input',
-            name    : 'camelVersion',
-            message : 'Your Camel version',
-            default : defaultVersion,
-            store   : true
+            type: 'input',
+            name: 'camelVersion',
+            message: 'Your Camel version',
+            default: defaultVersion,
+            store: true
         }, prompts);
         utils.addPrompt({
-            type    : 'input',
-            name    : 'camelDSL',
-            message : 'Camel DSL type (blueprint, spring, or java)',
-            choices : ['blueprint', 'spring', 'java'],
-            default : defaultDSL,
-            validate : utils.validateCamelDSL,
-            store   : true
-            }, prompts);     
+            type: 'input',
+            name: 'camelDSL',
+            message: 'Camel DSL type (blueprint, spring, or java)',
+            choices: ['blueprint', 'spring', 'java'],
+            default: defaultDSL,
+            validate: utils.validateCamelDSL,
+            store: true
+        }, prompts);
         utils.addPrompt({
             type: 'input',
             name: 'package',
             message: 'Package name: ',
             default: defaultPackage
         }, prompts);
- 
+
         if (showPrompts) {
             return this.prompt(prompts).then(function (props) {
                 this.appname = props.name;
@@ -125,7 +125,7 @@ module.exports = class extends yeoman {
             this.package = defaultPackage;
         }
     };
-        
+
     //writing logic here
     writing() {
         var packageFolder = this.package.replace(/\./g, '/');
@@ -133,7 +133,7 @@ module.exports = class extends yeoman {
         var myTemplatePath = path.join(this.templatePath(), this.camelDSL);
         this.folders = glob.sync('**/*/', { cwd: myTemplatePath });
         this.files = glob.sync('**/*', { cwd: myTemplatePath, nodir: true });
-
+        
         this.log('Creating folders');
         this.folders.forEach(function (folder) {
             mkdirp.sync(folder.replace(/src\/main\/java/g, path.join(src, packageFolder)));
