@@ -18,13 +18,13 @@
   "author": "Brian Fitzpatrick",
   "license": "Apache-2.0",
   "dependencies": {
+    "fs-extra": "^7.0.0",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
     "yeoman-assert": "^3.1.1",
     "yeoman-generator": "^2.0.5",
-    "yeoman-test": "^1.7.2",
-    "fs-extra": "^7.0.0"
+    "yeoman-test": "^1.7.2"
   },
   "devDependencies": {
     "mocha": "^5.2.0"

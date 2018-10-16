@@ -19,6 +19,58 @@ const chalk = require('chalk');
 
 const utils = {};
 
+// List extracted from: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html
+var reservedKeywords = {
+    abstract: true,
+    continue: true,
+    for: true,
+    new: true,
+    switch: true,
+    assert: true,
+    default: true,
+    package: true,
+    synchronized: true,
+    boolean: true,
+    do: true,
+    if: true,
+    private: true,
+    this: true,
+    break: true,
+    double: true,
+    implements: true,
+    protected: true,
+    throw: true,
+    byte: true,
+    else: true,
+    import: true,
+    public: true,
+    throws: true,
+    case: true,
+    enum: true,
+    instanceof: true,
+    return: true,
+    transient: true,
+    catch: true,
+    extends: true,
+    int: true,
+    short: true,
+    try: true,
+    char: true,
+    final: true,
+    interface: true,
+    static: true,
+    void: true,
+    class: true,
+    finally: true,
+    long: true,
+    strictfp: true,
+    volatile: true,
+    float: true,
+    native: true,
+    super: true,
+    while: true
+};
+
 // would be good to handle a few other validation tasks here as well, 
 // such as validating the Camel version (is 2.18.1 valid vs. 4.0.0 invalid)
 
@@ -61,9 +113,15 @@ utils.addPrompt = function addPrompt(promptContent, promptsList) {
 utils.validatePackage = function(packageName) {
     var regex = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/;
     if (!regex.test(packageName)) {
-        return chalk.red('Invalid package name');
+        return chalk.red('Unsupported package name');
     }
-    return true
+    var array = packageName.split('.');
+    for (var i = 0; i < array.length; i++) {
+        if (reservedKeywords.hasOwnProperty(array[i])) {
+            return chalk.red('Package name may not contain standard Java keywords');
+        }
+    }
+    return true;
 }
 
 module.exports = utils;
