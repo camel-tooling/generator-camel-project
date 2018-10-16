@@ -25,11 +25,6 @@ const defaultCamelVersion = "2.18.1";
 const defaultCamelDSL = "spring";
 const defaultPackagePrefix = "com.";
 
-var appname;
-var camelVersion;
-var camelDSL;
-var package;
-
 function consoleHeader() {
     console.log('     _                             _');
     console.log('    / \\     _ __     __ _    ___  | |__     ___');
