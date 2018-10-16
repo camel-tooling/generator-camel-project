@@ -157,10 +157,13 @@ describe('generator-camel:app', function () {
     });
   });
 
-  describe('Should properly scaffold with default config for Java DSL', function () {
-    it('utilities should pass basic tests', function () {
-      assert.strictEqual(utils.validatePackage('com.package'), true);
-      assert.notStrictEqual(utils.validatePackage('invalid@package'), true);
+  describe('Should test the utils class', function () {
+    it('utilities package validation should work for valid package', function () {
+      assert.strictEqual(utils.validatePackage('com.valid'), true);
+    });
+    it('utilities package validation should fail for invalid package', function () {
+      assert.notStrictEqual(utils.validatePackage('invalid@.pkg.name'), true);
+      assert.notStrictEqual(utils.validatePackage('a.name.with.package'), true);
     });
   });
 });
