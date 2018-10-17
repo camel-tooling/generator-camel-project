@@ -25,36 +25,56 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <!-- Camel BOM -->
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-parent</artifactId>
+        <version>${camel.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <version>${camel.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-stream</artifactId>
-      		<version>${camel.version}</version>
 		</dependency>
 
 		<!-- Testing & Camel Plugin -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-test-blueprint</artifactId>
-      <version>${camel.version}</version>
       <scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.felix</groupId>
-					<artifactId>org.apache.felix.fileinstall</artifactId>
-				</exclusion>
-			</exclusions>
     </dependency>
+
+ <!-- logging -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <scope>runtime</scope>
+    </dependency>		
   </dependencies>
   
 	<repositories>
@@ -165,12 +185,6 @@
 	<defaultGoal>install</defaultGoal>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>${version.maven-bundle-plugin}</version>
-				<extensions>true</extensions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
@@ -187,15 +201,41 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			
+			<!-- to generate the MANIFEST.MF of the bundle -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${version.maven-bundle-plugin}</version>
+      <extensions>false</extensions>
+        <executions>
+          <execution>
+            <id>bundle-manifest</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+ 			</plugin>
 
+    <!-- to include MANIFEST.MF in the bundle -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+			
 			<!-- to run the example using mvn camel:run -->
 			<plugin>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-maven-plugin</artifactId>
 				<version>${camel.version}</version>
-				<configuration>
-					<useBlueprint>true</useBlueprint>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

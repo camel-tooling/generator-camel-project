@@ -24,4 +24,4 @@
             <to uri="stream:out"/>
         </route>
     </camelContext>
-</beans>
+</blueprint>
