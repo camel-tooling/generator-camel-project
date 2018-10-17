@@ -113,12 +113,12 @@ utils.addPrompt = function addPrompt(promptContent, promptsList) {
 utils.validatePackage = function(packageName) {
     var regex = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/;
     if (!regex.test(packageName)) {
-        return chalk.red('Unsupported package name');
+        return chalk.red('Unsupported package name. Package must follow standard Java package naming guidelines.');
     }
     var array = packageName.split('.');
     for (var i = 0; i < array.length; i++) {
         if (reservedKeywords.hasOwnProperty(array[i])) {
-            return chalk.red('Package name may not contain standard Java keywords');
+            return chalk.red('Package name may not contain standard Java keywords such as \'' + array[i] + '\'.');
         }
     }
     return true;
