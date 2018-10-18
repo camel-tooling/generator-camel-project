@@ -21,7 +21,7 @@ var path = require('path');
 var mkdirp = require('mkdirp');
 const utils = require('./util');
 
-const defaultCamelVersion = "2.18.2";
+const defaultCamelVersion = "2.22.1";
 const defaultCamelDSL = "spring";
 const defaultPackagePrefix = "com.";
 
