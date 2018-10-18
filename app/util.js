@@ -16,6 +16,8 @@
  */
 
 const chalk = require('chalk');
+const download = require("mvn-artifact-download").default;
+const mvn = require('maven').create();
 
 const utils = {};
 
@@ -99,7 +101,7 @@ utils.setDefault = function setDefault(baseDefault, optionDefault) {
     var newDefault = baseDefault;
     if (!utils.isEmpty(optionDefault)) {
         var index = optionDefault.indexOf('=');
-        newDefault = optionDefault.substring(index+1, optionDefault.length);
+        newDefault = optionDefault.substring(index + 1, optionDefault.length);
     }
     return newDefault;
 }
@@ -110,7 +112,7 @@ utils.addPrompt = function addPrompt(promptContent, promptsList) {
     }
 }
 
-utils.validatePackage = function(packageName) {
+utils.validatePackage = function (packageName) {
     var regex = /^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/;
     if (!regex.test(packageName)) {
         return chalk.red('Unsupported package name. Package must follow standard Java package naming guidelines.');
@@ -122,6 +124,51 @@ utils.validatePackage = function(packageName) {
         }
     }
     return true;
+}
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+utils.validateCamelVersion2 = async function (version, dsl) {
+    const artifactId = "camel:spring";
+    const groupId = "org.apache.camel";
+    const repositoryUrl = 'https://maven.repository.redhat.com/ga';
+    const cmdLine = 'mvn org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DartifactId=' +
+        artifactId + ' -DgroupId=' + groupId + ' -Dversion=' + version;
+
+    const { err, stdout, stderr } = await exec(cmdLine)
+        .catch(error => chalk.red('Camel version \'' + version + '\' is not available in public repositories.'));
+    return true;
+
+    // const { exec } = require('child_process');
+
+    // // const cmdLine = 'mvn dependency:get -DrepoURL=' + repositoryUrl + 
+    // //     ' -Dartifact=org.apache.camel:camel-spring:' + value;
+    // await exec(cmdLine, (err, stdout, stderr) => {
+    //     var returnString;
+    //     if (err) {
+    //         returnString = chalk.red('Camel version \'' + value + '\' is not available in public repositories.');
+    //         console.log(`stderr: ${stderr}`);
+    //     } else {
+    //         returnString = true;
+    //         console.log(`stdout: ${stdout}`);
+    //     }
+    //     // the *entire* stdout and stderr (buffered)
+    //     return returnString;
+    // });
+}
+
+utils.validateCamelVersion = function (value) {
+    var artifactString = 'org.apache.camel:camel-spring:' + value;
+    var repositoryUrl = 'https://maven.repository.redhat.com/ga';
+
+    var dl = download(artifactString, null, repositoryUrl).
+        then(function () {
+            return value;
+        }).catch(_error => {
+            return chalk.red('Camel version \'' + value + '\' is not available in public repositories.');
+        }
+        );
+    return dl;
 }
 
 module.exports = utils;

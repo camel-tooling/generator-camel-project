@@ -157,7 +157,7 @@ describe('generator-camel:app', function () {
     });
   });
 
-  describe('Should test the utils class package validation', function () {
+  describe('Should test the utils class validation methods', function () {
     it('utilities package validation should work for valid package', function () {
       assert.strictEqual(utils.validatePackage('com.valid'), true);
     });
@@ -166,6 +166,10 @@ describe('generator-camel:app', function () {
     });
     it('utilities package validation should fail for package name with java keyword', function () {
       assert.notStrictEqual(utils.validatePackage('a.name.with.package'), true);
+    });
+
+    it('utilities camel version validation should pass for a valid version', function () {
+      assert.strictEqual(utils.validateCamelVersion2('2.18.2'), true);
     });
   });
 });

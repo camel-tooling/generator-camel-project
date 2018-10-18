@@ -87,18 +87,18 @@ module.exports = class extends yeoman {
         }, prompts);
         utils.addPrompt({
             type: 'input',
-            name: 'camelVersion',
-            message: 'Your Camel version',
-            default: defaultVersion,
-            store: true
-        }, prompts);
-        utils.addPrompt({
-            type: 'input',
             name: 'camelDSL',
             message: 'Camel DSL type (blueprint, spring, or java)',
             choices: ['blueprint', 'spring', 'java'],
             default: defaultDSL,
             validate: utils.validateCamelDSL,
+            store: true
+        }, prompts);
+        utils.addPrompt({
+            type: 'input',
+            name: 'camelVersion',
+            message: 'Your Camel version',
+            default: defaultVersion,
             store: true
         }, prompts);
         utils.addPrompt({

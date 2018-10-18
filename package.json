@@ -20,7 +20,9 @@
   "dependencies": {
     "fs-extra": "^7.0.0",
     "glob": "^7.1.2",
+    "maven": "^4.4.1",
     "mkdirp": "^0.5.1",
+    "mvn-artifact-download": "^4.0.0",
     "path": "^0.12.7",
     "yeoman-assert": "^3.1.1",
     "yeoman-generator": "^2.0.5",
