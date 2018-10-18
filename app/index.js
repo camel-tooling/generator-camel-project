@@ -26,6 +26,7 @@ const defaultCamelDSL = "spring";
 const defaultPackagePrefix = "com.";
 
 function consoleHeader() {
+    var pjson = require('../package.json');
     console.log('     _                             _');
     console.log('    / \\     _ __     __ _    ___  | |__     ___');
     console.log('   / _ \\   | \'_ \\   / _` |  / __| | \'_ \\   / _ \\');
@@ -40,6 +41,7 @@ function consoleHeader() {
     console.log('     \\____|   \\__,_| |_| |_| |_|  \\___| |_|');
     console.log(' -----------------------------------------------');
     console.log('            Camel Project Generator');
+    console.log('                 Version: ' + pjson.version);
     console.log(' -----------------------------------------------');
     console.log('');
 }
