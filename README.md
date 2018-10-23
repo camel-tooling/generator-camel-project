@@ -77,30 +77,31 @@ The generator is located in the npm repository (https://www.npmjs.com/package/ge
      \____|   \__,_| |_| |_| |_|  \___| |_|
  -----------------------------------------------
             Camel Project Generator
+                 Version: 0.1.2
  -----------------------------------------------
 
 ? Your Camel project name (myproject)
-? Your Camel version 2.18.1
-? DSL type (blueprint or spring) blueprint
+? Your Camel version 2.18.2
+? Camel DSL type (blueprint, spring, or java) blueprint
 ? Package name:  com.myproject
 camel project name myproject
-camel version 2.18.1
+camel version 2.18.2
 camel DSL blueprint
 package name com.myproject
 Creating folders
 Copying files
-Copying dot files
    create pom.xml
    create README.md
    create src\main\resources\OSGI-INF\blueprint\blueprint.xml
+   create src\main\resources\OSGI-INF\log4j2.properties
 >
 ```
 
 ### Notes on input fields
 
 * 'Camel project name' defaults to the name of the directory in which you start the generator.
-* 'Camel version' defaults to 2.18.1 but if you provide a different version, that version then becomes the default  for the next time the generator is run.
-* 'DSL type' defaults to 'spring' but if you change it to a valid DSL type such as 'blueprint', 'spring', or 'java', that becomes the default for the next time the generator is run. If you enter an invalid value, the generator will present an error ">> Camel DSL must be either 'spring', 'blueprint', or 'java'.".
+* 'Camel version' defaults to 2.18.2 but if you provide a different version, that version then becomes the default  for the next time the generator is run.
+* 'Camel DSL type' defaults to 'spring' but if you change it to a valid DSL type such as 'blueprint', 'spring', or 'java', that becomes the default for the next time the generator is run. If you enter an invalid value, the generator will present an error ">> Camel DSL must be either 'spring', 'blueprint', or 'java'.".
 * 'Package name' defaults to 'com.' + the name of the directory (i.e. 'com.myproject'). This default does not change if you provide a different value.
 
 ## Development Notes
@@ -122,6 +123,14 @@ Then create a directory you wish to create a Camel project in and run the genera
 > yo camel-project
 ```
 
+## Running the Generator from the Command Line (*NEW*) 
+With version 0.1.2 we have added command-line capabilities for providing argument values for the prompted information. Without prompting, this allows us to use the generator as part of a larger script to help prep a new project in a more automated fashion.
+
+This allows us to do things like the following and avoid having to go through the prompts:
+```
+> yo camel-project appname=MyApp camelVersion=2.19.1 camelDSL=spring package=com.myapp
+```
+
 ### Running the Mocha tests
 First you must install mocha with npm.
 ```
@@ -132,14 +141,10 @@ Then, in the main generator-camel-project directory:
 > mocha
 ```
 
-## Known issues
+## Running the Generated Templates
 
-Generated templates for spring and Java DSLs can be run with:
+Generated templates for spring, blueprint, and Java DSLs can be run with:
 ```
 > mvn install
 > mvn camel:run
 ```
-
-Unfortunately, the blueprint version does not run successfully. Working on finding a solution. 
-Created https://github.com/camel-tooling/generator-camel-project/issues/1
-
