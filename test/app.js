@@ -169,7 +169,7 @@ describe('generator-camel:app', function () {
     });
 
     it('utilities camel version validation should pass for a valid version', function () {
-      assert.strictEqual(utils.validateCamelVersion2('2.18.2'), true);
+      assert.strictEqual(utils.validateCamelVersion('2.18.2'), true);
     });
   });
 });
