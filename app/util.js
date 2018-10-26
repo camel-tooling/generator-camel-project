@@ -16,7 +16,8 @@
  */
 
 const chalk = require('chalk');
-
+const fs = require('fs');
+const path = require('path');
 const utils = {};
 
 // List extracted from: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html
@@ -74,13 +75,15 @@ var reservedKeywords = {
 // would be good to handle a few other validation tasks here as well, 
 // such as validating the Camel version (is 2.18.1 valid vs. 4.0.0 invalid)
 
-utils.validateCamelDSL = function (value) {
+utils.validateCamelDSL = function (value, isWsdl2Rest) {
     const isBlueprint = value.match('blueprint');
     const isSpring = value.match('spring');
     const isJava = value.match('java');
     let returnValue;
-    if (!isBlueprint && !isSpring && !isJava) {
+    if (!isWsdl2Rest && !isBlueprint && !isSpring && !isJava) {
         returnValue = chalk.red('Camel DSL must be either \'spring\', \'blueprint\', or \'java\'.');
+    } else if (isWsdl2Rest && !isBlueprint && !isSpring) {
+        returnValue = chalk.red('When using wsdl2rest, the Camel DSL must be either \'spring\' or \'blueprint\'.');
     } else {
         returnValue = true;
     }
@@ -93,6 +96,10 @@ utils.isEmpty = function isEmpty(str) {
 
 utils.isNotNull = function isNotNull(object) {
     return (object != null);
+}
+
+utils.isNull = function isNull(object) {
+    return (object == null);
 }
 
 utils.setDefault = function setDefault(baseDefault, optionDefault) {
@@ -122,6 +129,16 @@ utils.validatePackage = function(packageName) {
         }
     }
     return true;
+}
+
+utils.findWsdl2RestJar = function(testFolder) {
+    const f = fs.readdirSync(testFolder).find(f => path.extname(f) === '.jar');
+    if (typeof f === "undefined") {
+        return null;
+    } else {
+        var fullPath = path.join(testFolder, f);
+        return fullPath;
+    }
 }
 
 module.exports = utils;

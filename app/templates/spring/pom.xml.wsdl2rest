@@ -49,6 +49,28 @@
 			<artifactId>camel-test-spring</artifactId>
 	  		<version>${camel.version}</version>
 		</dependency>
+
+ 		<!-- wsdl2rest dependencies -->
+		<dependency>
+	  		<groupId>org.jboss.spec.javax.ws.rs</groupId>
+	  		<artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+	  		<version>1.0.0.Final-redhat-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+	  		<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cxf</artifactId>
+	  		<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jetty</artifactId>
+	  		<version>${camel.version}</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>

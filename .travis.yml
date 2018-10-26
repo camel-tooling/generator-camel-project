@@ -6,6 +6,7 @@ before_install:
   - 'export PATH=./node_modules/.bin:$PATH'
   - 'npm install -g typescript'
   - 'npm install -g mocha'
+  - 'mvn install -f ./app/wsdl2rest/pom.xml'
 install:
   - 'npm install --ignore-scripts'
   - 'npm install'
@@ -13,7 +14,6 @@ install:
   - 'rm -f ./node_modules/.bin/which'
 script:
   - 'npm test --silent'
-  - 'mocha'
 after_success:
   - if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]; then
     sonar-scanner;
