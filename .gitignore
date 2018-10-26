@@ -1,4 +1,13 @@
 /node_modules/
 /coverage/
 /.nyc_output/
+/bin/
+/app/wsdl2rest/target/
 log-camel-lsp.out
+.classpath
+.project
+/.settings/
+app/wsdl2rest/.classpath
+app/wsdl2rest/.project
+/app/wsdl2rest/.settings/
+.DS_Store

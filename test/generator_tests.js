@@ -21,7 +21,8 @@ var assert = require('yeoman-assert');
 var helpers = require('yeoman-test');
 var basicProps = {};
 var fs = require('fs-extra');
-const utils = require('../app/util');
+
+var defaultCamel = '2.22.2';
 
 describe('generator-camel:app', function () {
 
@@ -30,7 +31,7 @@ describe('generator-camel:app', function () {
     before(function () {
       basicProps.name = 'MyAppMock';
       basicProps.package = 'com.generator.mock';
-      basicProps.camelVersion = '2.18.2';
+      basicProps.camelVersion = defaultCamel;
       basicProps.camelDSL = 'spring';
 
       return helpers.run(path.join(__dirname, '../app'))
@@ -49,6 +50,7 @@ describe('generator-camel:app', function () {
       assert.file('pom.xml');
       assert.file('README.md');
       assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+      assert.noFile('pom.xml.wsdl2rest');
     });
 
     it('Should create pom.xml with default content', function () {
@@ -62,7 +64,7 @@ describe('generator-camel:app', function () {
     before(function () {
       basicProps.name = 'MyAppMockBP';
       basicProps.package = 'com.generator.mock.bp';
-      basicProps.camelVersion = '2.18.2';
+      basicProps.camelVersion = defaultCamel;
       basicProps.camelDSL = 'blueprint';
 
       return helpers.run(path.join(__dirname, '../app'))
@@ -81,6 +83,7 @@ describe('generator-camel:app', function () {
       assert.file('pom.xml');
       assert.file('README.md');
       assert.file('src/main/resources/OSGI-INF/blueprint/blueprint.xml');
+      assert.noFile('pom.xml.wsdl2rest');
     });
 
     it('Should create pom.xml with default content', function () {
@@ -94,7 +97,7 @@ describe('generator-camel:app', function () {
     before(function () {
       basicProps.name = 'MyAppMockJava';
       basicProps.package = 'com.generator.mock.javadsl';
-      basicProps.camelVersion = '2.18.2';
+      basicProps.camelVersion = defaultCamel;
       basicProps.camelDSL = 'java';
 
       return helpers.run(path.join(__dirname, '../app'))
@@ -114,6 +117,7 @@ describe('generator-camel:app', function () {
       assert.file('README.md');
       assert.file('src/main/java/com/generator/mock/javadsl/routes/CamelRoute.java');
       assert.file('src/main/java/com/generator/mock/javadsl/routes/Launcher.java');
+      assert.noFile('pom.xml.wsdl2rest');
     });
 
     it('Should create pom.xml with default content', function () {
@@ -127,7 +131,7 @@ describe('generator-camel:app', function () {
     before(function () {
       basicProps.name = 'MyAppMock2';
       basicProps.package = 'com.generator.mock2';
-      basicProps.camelVersion = '2.18.2';
+      basicProps.camelVersion = defaultCamel;
       basicProps.camelDSL = 'spring';
 
       var args = [];
@@ -149,6 +153,7 @@ describe('generator-camel:app', function () {
       assert.file('pom.xml');
       assert.file('README.md');
       assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+      assert.noFile('pom.xml.wsdl2rest');
     });
 
     it('Should create pom.xml with default content', function () {
@@ -157,15 +162,4 @@ describe('generator-camel:app', function () {
     });
   });
 
-  describe('Should test the utils class package validation', function () {
-    it('utilities package validation should work for valid package', function () {
-      assert.strictEqual(utils.validatePackage('com.valid'), true);
-    });
-    it('utilities package validation should fail for package name with invalid characters', function () {
-      assert.notStrictEqual(utils.validatePackage('invalid@.pkg.name'), true);
-    });
-    it('utilities package validation should fail for package name with java keyword', function () {
-      assert.notStrictEqual(utils.validatePackage('a.name.with.package'), true);
-    });
-  });
 });
