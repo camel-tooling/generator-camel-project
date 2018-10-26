@@ -19,6 +19,9 @@ var yeoman = require('yeoman-generator');
 var glob = require('glob');
 var path = require('path');
 var mkdirp = require('mkdirp');
+var fileUrl = require('file-url');
+var exec = require('child_process').exec;
+
 const utils = require('./util');
 
 const defaultCamelVersion = "2.22.1";
@@ -55,6 +58,8 @@ module.exports = class extends yeoman {
         this.argument('camelVersion', { type: String, required: false });
         this.argument('camelDSL', { type: String, required: false });
         this.argument('package', { type: String, required: false });
+
+        this.option('wsdl2rest');
     }
 
     prompting() {
@@ -68,6 +73,8 @@ module.exports = class extends yeoman {
             // no prompts
             showPrompts = false;
         }
+
+        let showWsdl2Rest = this.options.wsdl2rest;
 
         if (showPrompts) {
             consoleHeader();
@@ -109,12 +116,34 @@ module.exports = class extends yeoman {
             validate : utils.validatePackage
         }, prompts);
 
+        if (showWsdl2Rest) {
+            var defaultOutput = 'src//main//java';
+            utils.addPrompt({
+                type: 'input',
+                name: 'wsdl',
+                message: 'URL to the input WSDL',
+                store: true
+            }, prompts);
+            utils.addPrompt({
+                type: 'input',
+                name: 'outdirectory',
+                message: 'Name of the output directory for generated artifacts',
+                default: defaultOutput,
+                store: true
+            }, prompts);
+    
+        }
+
         if (showPrompts) {
             return this.prompt(prompts).then(function (props) {
                 this.appname = props.name;
                 this.camelVersion = props.camelVersion;
                 this.camelDSL = props.camelDSL;
                 this.package = props.package;
+                if (showWsdl2Rest) {
+                    this.outdirectory = props.outdirectory;
+                    this.wsdl = props.wsdl;
+                }
             }.bind(this));
         } else {
             this.appname = defaultProject;
@@ -126,6 +155,8 @@ module.exports = class extends yeoman {
 
     //writing logic here
     writing() {
+        let showWsdl2Rest = this.options.wsdl2rest;
+
         var packageFolder = this.package.replace(/\./g, '/');
         var src = 'src/main/java';
         var myTemplatePath = path.join(this.templatePath(), this.camelDSL);
@@ -153,5 +184,41 @@ module.exports = class extends yeoman {
                 { userProps: userProps }
             );
         }
+
+        if (showWsdl2Rest) {
+            wsdl2restGenerate(this.wsdl, this.outdirectory);
+        }
     }
 };
+
+function wsdl2restGenerate(wsdlUrl, outputDirectory) {
+    var targetDir = path.join(__dirname, 'wsdl2rest/target');
+    var jar = path.join(targetDir, 'wsdl2rest-impl-fatjar-0.1.1-SNAPSHOT.jar');
+    var log4jDir = path.join(__dirname, 'config', 'logging.properties');
+    var log4jDirStr = String(log4jDir);
+    var log4jDirUrl = fileUrl(log4jDirStr);
+    var outPath = path.join(process.cwd(), outputDirectory);
+
+    // build the java command with classpath, class name, and the passed parameters
+    var cmdString = 'java';
+    cmdString = cmdString + ' -jar ' + jar;
+    cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
+    cmdString = cmdString + ' --wsdl ' + wsdlUrl;
+    cmdString = cmdString + ' --out ' + outPath;
+    console.log('calling: ' + cmdString);
+    const wsdl2rest = exec(cmdString);
+    wsdl2rest.stdout.on('data', function (data) {
+      console.log(`stdout: ${data}`);
+    });
+    wsdl2rest.stderr.on('data', function (data) {
+      console.log(`stderr: ${data}`);
+    });
+    wsdl2rest.on('close', (code) => {
+      if (code === 0) {
+        console.log(`wsdl2rest generated artifacts successfully`);
+      } else {
+        console.log('code came back as ${code}');
+        console.log(`wsdl2rest did not generate artifacts successfully - please check the log file for details`);
+      }
+    });    
+}
