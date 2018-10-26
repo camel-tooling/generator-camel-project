@@ -207,6 +207,7 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory) {
     var outPath = path.join(process.cwd(), outputDirectory);
  
     if (!fs.existsSync(outPath)){
+        console.log(`Creating wsdl2rest java output directory`);
         fs.mkdirSync(outPath);
     }
 

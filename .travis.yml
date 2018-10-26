@@ -6,6 +6,7 @@ before_install:
   - 'export PATH=./node_modules/.bin:$PATH'
   - 'npm install -g typescript'
   - 'npm install -g mocha'
+  - 'mvn install -f ./app/wsdl2rest/pom.xml'
 install:
   - 'npm install --ignore-scripts'
   - 'npm install'

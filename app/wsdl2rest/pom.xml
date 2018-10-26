@@ -5,7 +5,7 @@
 
     <artifactId>wsdl2rest-impl-fatjar</artifactId>
     <name>Wsdl2Rest Fat Jar</name>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.3-SNAPSHOT</version>
     <groupId>org.github.camel.tooling.wsdl2rest</groupId>
 
     <properties>
