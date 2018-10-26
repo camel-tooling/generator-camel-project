@@ -21,6 +21,7 @@ var path = require('path');
 var mkdirp = require('mkdirp');
 var fileUrl = require('file-url');
 var exec = require('child_process').exec;
+var fs = require('fs');
 
 const utils = require('./util');
 
@@ -192,12 +193,30 @@ module.exports = class extends yeoman {
 };
 
 function wsdl2restGenerate(wsdlUrl, outputDirectory) {
-    var targetDir = path.join(__dirname, 'wsdl2rest/target');
+    var dsl = new String(this.camelDSL);
+    if (dsl.indexOf('java') > 0) {
+        console.log(`Generating Rest DSL from SOAP for a Camel Java DSL is currently unsupported.`);
+    }
+
+    var wsdl2restdir = path.join(__dirname, 'wsdl2rest');
+    var targetDir = path.join(wsdl2restdir, 'target');
     var jar = path.join(targetDir, 'wsdl2rest-impl-fatjar-0.1.1-SNAPSHOT.jar');
-    var log4jDir = path.join(__dirname, 'config', 'logging.properties');
+    var log4jDir = path.join(wsdl2restdir, 'config', 'logging.properties');
     var log4jDirStr = String(log4jDir);
     var log4jDirUrl = fileUrl(log4jDirStr);
     var outPath = path.join(process.cwd(), outputDirectory);
+ 
+    if (!fs.existsSync(outPath)){
+        fs.mkdirSync(outPath);
+    }
+
+    var blueprintPath;
+    var springPath;
+    if (dsl.indexOf('blueprint') > 0) {
+        blueprintPath = path.join(process.cwd(), "src/main/resources/OSGI-INF/blueprint/blueprint-rest.xml");
+    } else {
+        springPath = path.join(process.cwd(), "src/main/resources/META-INF/spring/camel-context-rest.xml");
+    };
 
     // build the java command with classpath, class name, and the passed parameters
     var cmdString = 'java';
@@ -205,6 +224,12 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory) {
     cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
     cmdString = cmdString + ' --wsdl ' + wsdlUrl;
     cmdString = cmdString + ' --out ' + outPath;
+
+    if (dsl.indexOf('blueprint') > 0) {
+        cmdString = cmdString + ' --blueprint-context ' + blueprintPath;
+    } else {
+        cmdString = cmdString + ' --camel-context ' + springPath;
+    }
     console.log('calling: ' + cmdString);
     const wsdl2rest = exec(cmdString);
     wsdl2rest.stdout.on('data', function (data) {
@@ -213,11 +238,11 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory) {
     wsdl2rest.stderr.on('data', function (data) {
       console.log(`stderr: ${data}`);
     });
-    wsdl2rest.on('close', (code) => {
+    wsdl2rest.on('close', function (code) {
       if (code === 0) {
         console.log(`wsdl2rest generated artifacts successfully`);
       } else {
-        console.log('code came back as ${code}');
+        console.log(`stderr: ${code}`);
         console.log(`wsdl2rest did not generate artifacts successfully - please check the log file for details`);
       }
     });    
