@@ -199,10 +199,7 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory, dsl) {
 
     var wsdl2restdir = path.join(__dirname, 'wsdl2rest');
     var targetDir = path.join(wsdl2restdir, 'target');
-    var jar = path.join(targetDir, 'wsdl2rest-impl-fatjar-0.1.1-SNAPSHOT.jar');
-    var log4jDir = path.join(wsdl2restdir, 'config', 'logging.properties');
-    var log4jDirStr = String(log4jDir);
-    var log4jDirUrl = fileUrl(log4jDirStr);
+    var jar = path.join(targetDir, 'wsdl2rest-impl-fatjar-*-SNAPSHOT.jar');
     var outPath = path.join(process.cwd(), outputDirectory);
     var wsdlFileUrl;
     if (!wsdlUrl.startsWith('file:')) {
@@ -218,20 +215,20 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory, dsl) {
 
     var blueprintPath;
     var springPath;
-    if (dsl.indexOf('blueprint') > 0) {
+    var isBlueprint = dsl.includes('blueprint') > 0;
+    if (isBlueprint) {
         blueprintPath = path.join(process.cwd(), "src/main/resources/OSGI-INF/blueprint/blueprint-rest.xml");
     } else {
         springPath = path.join(process.cwd(), "src/main/resources/META-INF/spring/camel-context-rest.xml");
     };
 
     // build the java command with classpath, class name, and the passed parameters
-    var cmdString = 'java';
-    cmdString = cmdString + ' -jar ' + jar;
-    cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
+    var cmdString = 'java ';
+    cmdString = cmdString + '-jar ' + jar;
     cmdString = cmdString + ' --wsdl ' + wsdlFileUrl;
     cmdString = cmdString + ' --out ' + outPath;
 
-    if (dsl.indexOf('blueprint') > 0) {
+    if (isBlueprint) {
         cmdString = cmdString + ' --blueprint-context ' + blueprintPath;
     } else {
         cmdString = cmdString + ' --camel-context ' + springPath;

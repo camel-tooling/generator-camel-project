@@ -196,14 +196,22 @@ describe('generator-camel:wsdl2rest', function () {
         .withPrompts({ package: basicProps.package })
         .withPrompts({ wsdl: basicProps.wsdl })
         .withPrompts({ outdirectory: basicProps.outdirectory })
-        .toPromise();
+        .toPromise().then(function(value) {
+          it('Should create the basic structure two ways', function () {
+            console.log('testing...');
+            assert.file('pom.xml');
+            assert.file('README.md');
+            assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+            assert.file('src/main/resources/META-INF/spring/camel-context-rest.xml')
+          });
+        });
     });
 
-    it('Should create the basic structure two ways', function () {
-      assert.file('pom.xml');
-      assert.file('README.md');
-      assert.file('src/main/resources/META-INF/spring/camel-context.xml');
-      assert.file('src/main/resources/META-INF/spring/camel-context-rest.xml')
-    });
+    // it('Should create the basic structure two ways', function () {
+    //   assert.file('pom.xml');
+    //   assert.file('README.md');
+    //   assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+    //   assert.file('src/main/resources/META-INF/spring/camel-context-rest.xml')
+    // });
   });
 });
