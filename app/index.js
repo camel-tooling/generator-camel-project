@@ -187,13 +187,12 @@ module.exports = class extends yeoman {
         }
 
         if (showWsdl2Rest) {
-            wsdl2restGenerate(this.wsdl, this.outdirectory);
+            wsdl2restGenerate(this.wsdl, this.outdirectory, this.camelDSL);
         }
     }
 };
 
-function wsdl2restGenerate(wsdlUrl, outputDirectory) {
-    var dsl = new String(this.camelDSL);
+function wsdl2restGenerate(wsdlUrl, outputDirectory, dsl) {
     if (dsl.indexOf('java') > 0) {
         console.log(`Generating Rest DSL from SOAP for a Camel Java DSL is currently unsupported.`);
     }
@@ -205,6 +204,12 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory) {
     var log4jDirStr = String(log4jDir);
     var log4jDirUrl = fileUrl(log4jDirStr);
     var outPath = path.join(process.cwd(), outputDirectory);
+    var wsdlFileUrl;
+    if (!wsdlUrl.startsWith('file:')) {
+        wsdlFileUrl = fileUrl(wsdlUrl);
+    } else {
+        wsdlFileUrl = wsdlUrl;
+    }
  
     if (!fs.existsSync(outPath)){
         console.log(`Creating wsdl2rest java output directory`);
@@ -223,7 +228,7 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory) {
     var cmdString = 'java';
     cmdString = cmdString + ' -jar ' + jar;
     cmdString = cmdString + ' -Dlog4j.configuration=' + log4jDirUrl;
-    cmdString = cmdString + ' --wsdl ' + wsdlUrl;
+    cmdString = cmdString + ' --wsdl ' + wsdlFileUrl;
     cmdString = cmdString + ' --out ' + outPath;
 
     if (dsl.indexOf('blueprint') > 0) {

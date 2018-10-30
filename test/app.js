@@ -169,3 +169,41 @@ describe('generator-camel:app', function () {
     });
   });
 });
+
+describe('generator-camel:wsdl2rest', function () {
+
+  describe('Should properly scaffold with config for Spring and wsdl2rest', function () {
+
+    before(function () {
+      basicProps.name = 'MyAppMock';
+      basicProps.package = 'com.generator.mock';
+      basicProps.camelVersion = '2.18.2';
+      basicProps.camelDSL = 'spring';
+      var wsdlPath = path.join(__dirname, '../test/address.wsdl');
+      basicProps.wsdl = wsdlPath;
+      basicProps.outdirectory = 'src/main/java';
+
+      return helpers.run(path.join(__dirname, '../app'))
+        .inTmpDir(function (dir) {
+          var done = this.async(); // `this` is the RunContext object.
+          fs.copy(path.join(__dirname, '../templates'), dir, done);
+          basicProps.outdirectory = path.join(dir, 'src/main/java');
+        })
+        .withOptions({ wsdl2rest: true })
+        .withPrompts({ name: basicProps.name })
+        .withPrompts({ camelVersion: basicProps.camelVersion })
+        .withPrompts({ camelDSL: basicProps.camelDSL })
+        .withPrompts({ package: basicProps.package })
+        .withPrompts({ wsdl: basicProps.wsdl })
+        .withPrompts({ outdirectory: basicProps.outdirectory })
+        .toPromise();
+    });
+
+    it('Should create the basic structure two ways', function () {
+      assert.file('pom.xml');
+      assert.file('README.md');
+      assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+      assert.file('src/main/resources/META-INF/spring/camel-context-rest.xml')
+    });
+  });
+});
