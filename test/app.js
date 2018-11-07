@@ -174,7 +174,7 @@ describe('generator-camel:wsdl2rest', function () {
 
   describe('Should properly scaffold with config for Spring and wsdl2rest', function () {
 
-    before(function () {
+    it('Should create the basic structure two ways', function () {
       basicProps.name = 'MyAppMock';
       basicProps.package = 'com.generator.mock';
       basicProps.camelVersion = '2.18.2';
@@ -206,12 +206,5 @@ describe('generator-camel:wsdl2rest', function () {
           });
         });
     });
-
-    // it('Should create the basic structure two ways', function () {
-    //   assert.file('pom.xml');
-    //   assert.file('README.md');
-    //   assert.file('src/main/resources/META-INF/spring/camel-context.xml');
-    //   assert.file('src/main/resources/META-INF/spring/camel-context-rest.xml')
-    // });
   });
 });
