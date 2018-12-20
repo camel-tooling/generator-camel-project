@@ -46,6 +46,21 @@ For a Java DSL-based project, the structure looks like this:
     │               └── Launcher.java                  Java class aiding in launching from command line
 ```
 
+For a Spring-Boot based project, the structure looks like this:
+```
+├── README.md                                          Project Readme file
+├── pom.xml                                            Maven Project Object Model file
+└── src
+    ├── main
+    │   └── java
+    │       └── [your package name]
+    │           └── routes
+    │               └── SampleCamelApplication.java    Spring-Boot application class file
+        └── resources
+            └── application.properties                 Spring-Boot application properties file
+            └── camel-context.xml                      Camel configuration file (Spring XML DSL)
+```
+
 ## Installing the Camel Project generator
 
 You must have yeoman installed first:
@@ -77,12 +92,12 @@ The generator is located in the npm repository (https://www.npmjs.com/package/ge
      \____|   \__,_| |_| |_| |_|  \___| |_|
  -----------------------------------------------
             Camel Project Generator
-                 Version: 0.1.3
+                 Version: 0.2.0
  -----------------------------------------------
 
 ? Your Camel project name (myproject)
 ? Your Camel version 2.22.2
-? Camel DSL type (blueprint, spring, or java) blueprint
+? Camel DSL type (blueprint, spring, spring-boot, or java) blueprint
 ? Package name:  com.myproject
 camel project name myproject
 camel version 2.22.2
@@ -101,12 +116,12 @@ Copying files
 
 * 'Camel project name' defaults to the name of the directory in which you start the generator.
 * 'Camel version' currently defaults to 2.22.2 but if you provide a different version, that version then becomes the default for the next time the generator is run.
-* 'Camel DSL type' defaults to 'spring' but if you change it to a valid DSL type such as 'blueprint', 'spring', or 'java', that becomes the default for the next time the generator is run. If you enter an invalid value, the generator will present an error ">> Camel DSL must be either 'spring', 'blueprint', or 'java'.". Note that with the --wsdl2rest flag set, your DSL options are limited to 'spring' and 'blueprint'.
+* 'Camel DSL type' defaults to 'spring' but if you change it to a valid DSL type such as 'blueprint', 'spring', 'spring-boot', or 'java', that becomes the default for the next time the generator is run. If you enter an invalid value, the generator will present an error ">> Camel DSL must be either 'spring', 'blueprint', or 'java'.". Note that with the --wsdl2rest flag set, your DSL options are limited to 'spring', 'spring-boot', and 'blueprint'.
 * 'Package name' defaults to 'com.' + the name of the directory (i.e. 'com.myproject'). This default does not change if you provide a different value. Note that you may need to change the package name to make it valid if your directory/project name contains special characters.
 
 ### wsdl2rest Options
 
-As of version 0.1.3, you now have the option to scaffold a new Spring or Blueprint project based on an available WSDL file for a JAX-WS service. 
+As of version 0.2.0, you now have the option to scaffold a new Spring, Spring-Boot, or Blueprint project based on an available WSDL file for a JAX-WS service. 
 
 To run the generator with the additional wsdl2rest functionality, now you simply type:
 ```
@@ -186,6 +201,12 @@ Generated templates for spring, blueprint, and Java DSLs can be run with:
 ```
 > mvn install
 > mvn camel:run
+```
+
+Generated templates for spring-boot can be run with:
+```
+> mvn install
+> mvn spring-boot:run
 ```
 
 ## Known Issues

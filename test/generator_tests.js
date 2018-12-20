@@ -59,6 +59,42 @@ describe('generator-camel:app', function () {
     });
   });
 
+
+  describe('Should properly scaffold with default config for Spring Boot', function () {
+
+    before(function () {
+      basicProps.name = 'MyAppMock';
+      basicProps.package = 'com.generator.mock';
+      basicProps.camelVersion = defaultCamel;
+      basicProps.camelDSL = 'spring-boot';
+
+      return helpers.run(path.join(__dirname, '../app'))
+        .inTmpDir(function (dir) {
+          var done = this.async(); // `this` is the RunContext object.
+          fs.copy(path.join(__dirname, '../templates'), dir, done);
+        })
+        .withPrompts({ name: basicProps.name })
+        .withPrompts({ camelVersion: basicProps.camelVersion })
+        .withPrompts({ camelDSL: basicProps.camelDSL })
+        .withPrompts({ package: basicProps.package })
+        .toPromise();
+    });
+
+    it('Should create the basic structure', function () {
+      assert.file('pom.xml');
+      assert.file('README.md');
+      assert.file('src/main/resources/camel-context.xml');
+      assert.file('src/main/java/com/generator/mock/routes/SampleCamelApplication.java');
+      assert.noFile('pom.xml.wsdl2rest');
+    });
+
+    it('Should create pom.xml with default content', function () {
+      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
+      assert.fileContent('pom.xml', new RegExp('<spring-boot-version>'));
+    });
+  });
+
   describe('Should properly scaffold with default config for Blueprint', function () {
 
     before(function () {

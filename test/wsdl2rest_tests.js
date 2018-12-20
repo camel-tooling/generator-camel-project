@@ -100,6 +100,39 @@ describe('generator-camel:wsdl2rest', function () {
         });
     });
 
+    it('Should create the basic structure and CXF files for spring-boot', function () {
+      basicProps.name = 'MyAppMock';
+      basicProps.package = 'com.generator.mock';
+      basicProps.camelVersion = defaultCamel;
+      basicProps.camelDSL = 'spring-boot';
+      var wsdlPath = path.join(__dirname, '../test/address.wsdl');
+      basicProps.wsdl = wsdlPath;
+      basicProps.outdirectory = 'src/main/java';
+      return helpers.run(path.join(__dirname, '../app'))
+        .inTmpDir(function (dir) {
+          var done = this.async(); // `this` is the RunContext object.
+          fs.copy(path.join(__dirname, '../templates'), dir, done);
+          basicProps.outdirectory = path.join(dir, 'src/main/java');
+        })
+        .withOptions({ wsdl2rest: true })
+        .withOptions({ debug: true })
+        .withPrompts({ name: basicProps.name })
+        .withPrompts({ camelVersion: basicProps.camelVersion })
+        .withPrompts({ camelDSL: basicProps.camelDSL })
+        .withPrompts({ package: basicProps.package })
+        .withPrompts({ wsdl: basicProps.wsdl })
+        .withPrompts({ outdirectory: basicProps.outdirectory })
+        .toPromise()
+        .then(() => {
+          assert.file('pom.xml');
+          assert.file('README.md');
+          assert.noFile('src/main/resources/META-INF/spring/camel-context.xml');
+          assert.file('src/main/resources/camel-context.xml');
+          assert.file('src/main/java/org/jboss/fuse/wsdl2rest/test/doclit/Address.java');
+          assert.noFile('pom.xml.wsdl2rest');
+        });
+    });
+
     it('Should create the basic structure and CXF files for spring with an internal running WSDL url', function () {
 
       basicProps.name = 'HelloWorld';

@@ -1,7 +1,7 @@
 <%= userProps.name %>
 =============
 
-Camel Project for Blueprint 
+Camel Project for Spring Boot
 =========================================
 To build this project use
 ```bash
@@ -10,7 +10,7 @@ To build this project use
 
 To run the project you can execute the following Maven goal
 ```bash
-    mvn camel:run
+    mvn spring-boot:run
 ```
 
 For more help see the Apache Camel documentation

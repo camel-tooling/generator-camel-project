@@ -77,13 +77,14 @@ var reservedKeywords = {
 
 utils.validateCamelDSL = function (value, isWsdl2Rest) {
     const isBlueprint = value.match('blueprint');
+    const isSpringBoot = value.match('spring-boot');
     const isSpring = value.match('spring');
     const isJava = value.match('java');
     let returnValue;
-    if (!isWsdl2Rest && !isBlueprint && !isSpring && !isJava) {
-        returnValue = chalk.red('Camel DSL must be either \'spring\', \'blueprint\', or \'java\'.');
-    } else if (isWsdl2Rest && !isBlueprint && !isSpring) {
-        returnValue = chalk.red('When using wsdl2rest, the Camel DSL must be either \'spring\' or \'blueprint\'.');
+    if (!isWsdl2Rest && !isBlueprint && !isSpring && !isJava && !isSpringBoot) {
+        returnValue = chalk.red('Camel DSL must be either \'spring\', \'spring-boot\', \'blueprint\', or \'java\'.');
+    } else if (isWsdl2Rest && !isBlueprint && !isSpring && !isSpringBoot) {
+        returnValue = chalk.red('When using wsdl2rest, the Camel DSL must be either \'spring\', \'spring-boot\', or \'blueprint\'.');
     } else {
         returnValue = true;
     }

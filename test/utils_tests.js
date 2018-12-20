@@ -44,13 +44,15 @@ describe('generator-camel:app', function () {
     });
 
     it('validateCamelDSL should fail on java dsl with wsdl2rest active', function () {
-      // wsdl2rest only supports spring & blueprint, not java
+      // wsdl2rest only supports spring, spring-boot, & blueprint, not java
       assert.notStrictEqual(utils.validateCamelDSL('java', true), true);
+      assert.strictEqual(utils.validateCamelDSL('spring-boot', true), true);
       assert.strictEqual(utils.validateCamelDSL('spring', true), true);
       assert.strictEqual(utils.validateCamelDSL('blueprint', true), true);
 
-      // without wsdl2rest, java, spring & blueprint are supported
+      // without wsdl2rest, java, spring, spring-boot & blueprint are supported
       assert.strictEqual(utils.validateCamelDSL('java', false), true);
+      assert.strictEqual(utils.validateCamelDSL('spring-boot', false), true);
       assert.strictEqual(utils.validateCamelDSL('spring', false), true);
       assert.strictEqual(utils.validateCamelDSL('blueprint', false), true);
     });
@@ -59,11 +61,13 @@ describe('generator-camel:app', function () {
   it('validateCamelDSL should fail on java dsl with wsdl2rest active', function () {
     // wsdl2rest only supports spring & blueprint, not java
     assert.notStrictEqual(utils.validateCamelDSL('java', true), true);
+    assert.strictEqual(utils.validateCamelDSL('spring-boot', true), true);
     assert.strictEqual(utils.validateCamelDSL('spring', true), true);
     assert.strictEqual(utils.validateCamelDSL('blueprint', true), true);
 
     // without wsdl2rest, java, spring & blueprint are supported
     assert.strictEqual(utils.validateCamelDSL('java', false), true);
+    assert.strictEqual(utils.validateCamelDSL('spring-boot', false), true);
     assert.strictEqual(utils.validateCamelDSL('spring', false), true);
     assert.strictEqual(utils.validateCamelDSL('blueprint', false), true);
   });
