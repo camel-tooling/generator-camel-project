@@ -1,4 +1,4 @@
-<%= userProps.appName %>
+<%= userProps.name %>
 =============
 
 Camel Project for Java 

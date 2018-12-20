@@ -91,7 +91,7 @@ module.exports = class extends yeoman {
         let showWsdl2Rest = this.options.wsdl2rest;
         if (typeof showWsdl2Rest == 'undefined') showWsdl2Rest = false;
 
-        var showW2RPrompts = true;
+        var showW2RPrompts = showPrompts;
         if (!showPrompts && showWsdl2Rest) {
             showW2RPrompts = (utils.isNull(this.options.wsdl)) &&
                 (utils.isNull(this.options.outdirectory)) &&
@@ -125,8 +125,8 @@ module.exports = class extends yeoman {
         utils.addPrompt({
             type: 'input',
             name: 'camelDSL',
-            message: 'Camel DSL type (blueprint, spring, or java)',
-            choices: ['blueprint', 'spring', 'java'],
+            message: 'Camel DSL type (blueprint, spring, spring-boot, or java)',
+            choices: ['blueprint', 'spring', 'spring-boot', 'java'],
             default: defaultDSL,
             validate: (value) => {
                 return utils.validateCamelDSL(value, showWsdl2Rest);
@@ -263,6 +263,7 @@ module.exports = class extends yeoman {
 var skipListForWsdl2RestFiles = [
     'src/main/resources/META-INF/spring/camel-context.xml',
     'src/main/resources/OSGI-INF/blueprint/blueprint.xml',
+    'src/main/resources/camel-context.xml',
     'pom.xml'
 ];
 
@@ -316,10 +317,16 @@ function wsdl2restGenerate(wsdlUrl, outputDirectory, jaxrs, jaxws, dsl, isDebug)
 
     var restContextPath;
     var rawContextPath;
-    var isBlueprint = dsl.includes('blueprint') > 0;
+
+    const isBlueprint = dsl.match('blueprint');
+    const isSpringBoot = dsl.match('spring-boot');
+    const isSpring = dsl.match('spring');
+
     if (isBlueprint) {
         rawContextPath = "src/main/resources/OSGI-INF/blueprint/blueprint.xml";
-    } else {
+    } else if (isSpringBoot) {
+        rawContextPath = "src/main/resources/camel-context.xml";
+    } else if (isSpring) {
         rawContextPath = "src/main/resources/META-INF/spring/camel-context.xml";
     }
     restContextPath = path.join(process.cwd(), rawContextPath);
