@@ -17,11 +17,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
     <camelContext id="_camelContext1" xmlns="http://camel.apache.org/schema/spring">
         <route id="_route1">
-            <from uri="timer://simpleTimer?period=1000"/>
-            <setBody>
-                <simple>Hello from timer at ${header.firedTime}></simple>
+            <from id="_from1" uri="timer://simpleTimer?period=1000"/>
+            <setBody id="_setBody1">
+                <simple>Hello from timer at ${header.firedTime}&gt;</simple>
             </setBody>
-            <to uri="stream:out"/>
+            <to id="_to1" uri="stream:out"/>
         </route>
     </camelContext>
 </beans>
