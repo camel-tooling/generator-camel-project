@@ -197,10 +197,16 @@ Then, in the main generator-camel-project directory:
 
 ## Running the Generated Templates
 
-Generated templates for spring, blueprint, and Java DSLs can be run with:
+Generated templates for spring and blueprint DSLs can be run with:
 ```
 > mvn install
 > mvn camel:run
+```
+
+Generated templates for Java DSL can be run with:
+```
+> mvn install
+> mvn exec:java
 ```
 
 Generated templates for spring-boot can be run with:
