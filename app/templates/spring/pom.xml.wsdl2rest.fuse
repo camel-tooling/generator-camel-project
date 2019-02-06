@@ -23,24 +23,62 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<version.maven-bundle-plugin>3.2.0</version.maven-bundle-plugin>
-		<camel.version><%= userProps.camelVersion %></camel.version>
+		<jboss.fuse.bom.version><%= userProps.camelVersion %></jboss.fuse.bom.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.redhat-fuse</groupId>
+				<artifactId>fuse-karaf-bom</artifactId>
+				<version>${jboss.fuse.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-core</artifactId>
-      		<version>${camel.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-test</artifactId>
-      		<version>${camel.version}</version>
+			<artifactId>camel-spring</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-stream</artifactId>
-      		<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+
+		<!-- Testing & Camel Plugin -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+		</dependency>
+
+ 		<!-- wsdl2rest dependencies -->
+		<dependency>
+	  		<groupId>org.jboss.spec.javax.ws.rs</groupId>
+	  		<artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+	  		<version>1.0.0.Final-redhat-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cxf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jetty</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -121,7 +159,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-				<pluginRepository>
+		<pluginRepository>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>never</updatePolicy>
@@ -149,19 +187,43 @@
 	</pluginRepositories>
 
 	<build>
+		<defaultGoal>install</defaultGoal>
 		<plugins>
-		<!-- Allows the routes to be run via 'mvn exec:java' -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${version.maven-bundle-plugin}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
 				<configuration>
-					<mainClass><%= userProps.package %>.routes.Launcher</mainClass>
-					<includePluginDependencies>false</includePluginDependencies>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- Allows the routes to be run via 'mvn camel:run' -->
+			<plugin>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-maven-plugin</artifactId>
+				<version>${jboss.fuse.bom.version}</version>
+				<configuration>
+					<applicationContextUri>META-INF/spring/camel-context.xml</applicationContextUri>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
-	<description>Empty Camel Java Example</description>
+	<description>Empty Camel Spring Example</description>
 </project>

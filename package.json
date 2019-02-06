@@ -25,7 +25,8 @@
     "path": "^0.12.7",
     "yeoman-assert": "^3.1.1",
     "yeoman-generator": "^2.0.5",
-    "yeoman-test": "^1.7.2"
+    "yeoman-test": "^1.7.2",
+    "yo": "^2.0.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",
