@@ -1,6 +1,6 @@
 {
   "name": "generator-camel-project",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Generates the scaffold for a Camel project with the given name.",
   "files": [
     "app",
