@@ -19,7 +19,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "file-url": "^2.0.2",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^8.1.0",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
