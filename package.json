@@ -24,7 +24,7 @@
     "mkdirp": "^0.5.1",
     "path": "^0.12.7",
     "yeoman-assert": "^3.1.1",
-    "yeoman-generator": "^2.0.5",
+    "yeoman-generator": "^4.0.1",
     "yeoman-test": "^1.7.2"
   },
   "devDependencies": {
