@@ -26,7 +26,7 @@ var defaultCamel = '2.22.2';
 
 describe('generator-camel:app', function () {
 
-  describe('Should properly scaffold with default config for Spring', function () {
+  describe('Should properly scaffold with default config for Spring', function (done) {
 
     before(function () {
       basicProps.name = 'MyAppMock';
@@ -43,24 +43,22 @@ describe('generator-camel:app', function () {
         .withPrompts({ camelVersion: basicProps.camelVersion })
         .withPrompts({ camelDSL: basicProps.camelDSL })
         .withPrompts({ package: basicProps.package })
-        .toPromise();
-    });
+        .toPromise().then( function() {
+          assert.file('pom.xml');
+          assert.file('README.md');
+          assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+          assert.noFile('pom.xml.wsdl2rest');
 
-    it('Should create the basic structure', function () {
-      assert.file('pom.xml');
-      assert.file('README.md');
-      assert.file('src/main/resources/META-INF/spring/camel-context.xml');
-      assert.noFile('pom.xml.wsdl2rest');
-    });
+          assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+          assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
 
-    it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
+          done();
+        });
     });
   });
 
 
-  describe('Should properly scaffold with default config for Spring Boot', function () {
+  describe('Should properly scaffold with default config for Spring Boot', function (done) {
 
     before(function () {
       basicProps.name = 'MyAppMock';
@@ -77,25 +75,23 @@ describe('generator-camel:app', function () {
         .withPrompts({ camelVersion: basicProps.camelVersion })
         .withPrompts({ camelDSL: basicProps.camelDSL })
         .withPrompts({ package: basicProps.package })
-        .toPromise();
-    });
-
-    it('Should create the basic structure', function () {
-      assert.file('pom.xml');
-      assert.file('README.md');
-      assert.file('src/main/resources/camel-context.xml');
-      assert.file('src/main/java/com/generator/mock/routes/SampleCamelApplication.java');
-      assert.noFile('pom.xml.wsdl2rest');
-    });
-
-    it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
-      assert.fileContent('pom.xml', new RegExp('<spring-boot-version>'));
-    });
+        .toPromise().then( function() {
+          assert.file('pom.xml');
+          assert.file('README.md');
+          assert.file('src/main/resources/camel-context.xml');
+          assert.file('src/main/java/com/generator/mock/routes/SampleCamelApplication.java');
+          assert.noFile('pom.xml.wsdl2rest');
+    
+          assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+          assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
+          assert.fileContent('pom.xml', new RegExp('<spring-boot-version>'));
+    
+          done();
+        });
+      });
   });
 
-  describe('Should properly scaffold with default config for Blueprint', function () {
+  describe('Should properly scaffold with default config for Blueprint', function (done) {
 
     before(function () {
       basicProps.name = 'MyAppMockBP';
@@ -112,23 +108,21 @@ describe('generator-camel:app', function () {
         .withPrompts({ camelVersion: basicProps.camelVersion })
         .withPrompts({ camelDSL: basicProps.camelDSL })
         .withPrompts({ package: basicProps.package })
-        .toPromise();
-    });
+        .toPromise().then( function() {
+          assert.file('pom.xml');
+          assert.file('README.md');
+          assert.file('src/main/resources/OSGI-INF/blueprint/blueprint.xml');
+          assert.noFile('pom.xml.wsdl2rest');
+    
+          assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+          assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
 
-    it('Should create the basic structure', function () {
-      assert.file('pom.xml');
-      assert.file('README.md');
-      assert.file('src/main/resources/OSGI-INF/blueprint/blueprint.xml');
-      assert.noFile('pom.xml.wsdl2rest');
-    });
-
-    it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
+          done();
+        });
     });
   });
 
-  describe('Should properly scaffold with default config for Java DSL', function () {
+  describe('Should properly scaffold with default config for Java DSL', function (done) {
 
     before(function () {
       basicProps.name = 'MyAppMockJava';
@@ -145,24 +139,22 @@ describe('generator-camel:app', function () {
         .withPrompts({ camelVersion: basicProps.camelVersion })
         .withPrompts({ camelDSL: basicProps.camelDSL })
         .withPrompts({ package: basicProps.package })
-        .toPromise();
-    });
+        .toPromise().then( function() {
+          assert.file('pom.xml');
+          assert.file('README.md');
+          assert.file('src/main/java/com/generator/mock/javadsl/routes/CamelRoute.java');
+          assert.file('src/main/java/com/generator/mock/javadsl/routes/Launcher.java');
+          assert.noFile('pom.xml.wsdl2rest');
+    
+          assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+          assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
 
-    it('Should create the basic structure', function () {
-      assert.file('pom.xml');
-      assert.file('README.md');
-      assert.file('src/main/java/com/generator/mock/javadsl/routes/CamelRoute.java');
-      assert.file('src/main/java/com/generator/mock/javadsl/routes/Launcher.java');
-      assert.noFile('pom.xml.wsdl2rest');
-    });
-
-    it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
-    });
+          done();
+        });
+      });
   });
 
-  describe('Should properly scaffold with command line options rather than prompts', function () {
+  describe('Should properly scaffold with command line options rather than prompts', function (done) {
 
     before(function () {
       basicProps.name = 'MyAppMock2';
@@ -182,20 +174,18 @@ describe('generator-camel:app', function () {
           fs.copy(path.join(__dirname, '../templates'), dir, done);
         })
         .withArguments(args)
-        .toPromise();
-    });
+        .toPromise().then( function() {
+          assert.file('pom.xml');
+          assert.file('README.md');
+          assert.file('src/main/resources/META-INF/spring/camel-context.xml');
+          assert.noFile('pom.xml.wsdl2rest');
 
-    it('Should create the basic structure', function () {
-      assert.file('pom.xml');
-      assert.file('README.md');
-      assert.file('src/main/resources/META-INF/spring/camel-context.xml');
-      assert.noFile('pom.xml.wsdl2rest');
-    });
+          assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
+          assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
 
-    it('Should create pom.xml with default content', function () {
-      assert.fileContent('pom.xml', new RegExp('<groupId>' + basicProps.package + '</groupId>'));
-      assert.fileContent('pom.xml', new RegExp('<artifactId>' + basicProps.name + '</artifactId>'));
-    });
+          done();
+        });
+      });
+
   });
-
 });
