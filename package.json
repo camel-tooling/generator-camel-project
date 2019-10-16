@@ -32,7 +32,7 @@
     "chai-http": "^4.3.0",
     "maven": "^4.7.0",
     "mocha": "^6.2.0",
-    "soap": "^0.29.0"
+    "soap": "^0.30.0"
   },
   "scripts": {
     "unit": "mocha --timeout=30000 test/",
