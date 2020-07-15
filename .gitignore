@@ -11,3 +11,4 @@ app/wsdl2rest/.classpath
 app/wsdl2rest/.project
 /app/wsdl2rest/.settings/
 .DS_Store
+.vscode/settings.json
