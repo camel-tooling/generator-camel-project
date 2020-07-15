@@ -200,8 +200,8 @@ module.exports = class extends yeoman {
                 this.jaxwsURL = defaultJaxWS;
                 this.jaxrsURL = defaultJaxRS;
             }
+        }
     }
-    };
 
     //writing logic here
     writing() {
