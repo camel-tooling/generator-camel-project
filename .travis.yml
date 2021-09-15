@@ -34,4 +34,4 @@ addons:
   sonarcloud:
     organization: "camel-tooling"
     branches:
-      - master
+      - main
